@@ -1,0 +1,94 @@
+
+
+
+
+.font-16 { font-size: 16px !important; }
+
+
+.vertical-a-mid { vertical-align: middle !important; }
+
+.bg-green {
+	background-color: #49c000 !important;
+}
+
+.color-white {
+	color: #ffffff !important;
+}
+
+.display-n { display: none; }
+
+.cursor-p { cursor: pointer; }
+
+
+.px-navbar .navbar-header {
+    color: #333;
+    background: #eee;
+}
+
+.px-navbar .navbar-header a {
+	color: #333;
+    font-weight: 600;
+    font-size: 20px;
+
+}
+
+.px-navbar .navbar-header a:hover {
+	color: #333;
+}
+
+.px-navbar, .px-navbar .navbar-collapse {
+    background: #eee;
+}
+
+
+.px-navbar .navbar-right {
+	background-color: #eee;
+}
+
+
+.px-navbar .navbar-nav a {
+	color: #333;
+}
+
+
+
+.wizard-step-number {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    display: block;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    -webkit-transform: translateY(-14px);
+    -ms-transform: translateY(-14px);
+    transform: translateY(-14px);
+    text-align: center;
+    color: #919191;
+    border: 2px solid rgba(0,0,0,.05);
+    border-radius: 9999px;
+    font-weight: 700;
+    line-height: 20px;
+}
+
+
+
+#admin-menu-button .dropdown-menu {
+    min-width: 170px;
+}
+
+
+
+.errorTxt, .error { color: #dc3545 !important }
+
+
+
+
+.btn-primary {
+    text-transform: uppercase;
+}
+
+
+
