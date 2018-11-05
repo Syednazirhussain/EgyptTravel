@@ -7,6 +7,13 @@
 		background-image: url("{{ asset("/site/assets/images/1.jpg") }}");
 	}
 
+    .social_link a{
+        color: #898989;
+        font-size: 13px;
+    }
+    .social_link a:hover{
+        color: #fec107;
+    }
 
 </style>
 
@@ -39,7 +46,7 @@
                         <div class="ui breadcrumb">
                             <a href="{{ route('public.site') }}" class="section">Home</a>
                             <div class="divider"> / </div>
-                            <div class="active section">Gallery</div>
+                            <div class="active section">About</div>
                         </div>
                     </div>
                 </div>
@@ -90,21 +97,27 @@
                     <p>{{ $webSetting[0]->footer_text }}</p>
                     <div class="address">
                         <i class="fa fa-twitter"></i>
-                        <p>
+                        <p class="social_link">
                             <a href="{{ $webSetting[0]->twitter_link }}">Twitter</a>
                         </p>
                     </div>
                     <div class="address">
                         <i class="fa fa-facebook"></i>
-                        <p><a href="{{ $webSetting[0]->facebook_link }}">Facebook</a></p>
+                        <p class="social_link">
+                            <a href="{{ $webSetting[0]->facebook_link }}">Facebook</a>
+                        </p>
                     </div>
                     <div class="address">
                         <i class="fa fa-instagram"></i>
-                        <p><a href="{{ $webSetting[0]->instagram_link }}">Instagram</a></p>
+                        <p class="social_link">
+                            <a href="{{ $webSetting[0]->instagram_link }}">Instagram</a>
+                        </p>
                     </div>
                     <div class="address">
                         <i class="fa fa-google-plus"></i>
-                        <p><a href="{{ $webSetting[0]->google_plus_link }}">admin@gmail.com</a></p>
+                        <p class="social_link">
+                            <a href="{{ $webSetting[0]->google_plus_link }}">admin@gmail.com</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -114,12 +127,12 @@
                         <div class="footer-box">
                             <h4 class="footer-title">Packages</h4>
                             <ul class="categoty">
-                            	@foreach($packages as $package)
-	                                <li>
-	                                	<a href="javascript:void(0)">
-	                                		{{ $package->title }}
-	                                	</a>
-	                                </li>
+                                @foreach($packages as $package)
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            {{ $package->title }}
+                                        </a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -128,25 +141,25 @@
                         <div class="footer-box">
                             <h4 class="footer-title">Hotels</h4>
                             <ul class="categoty">
-                            	@foreach($accomodations as $accomodation)
-                                	<li>
-                                		<a href="javascript:void(0)">
-                                			{{ $accomodation->name }}
-                                		</a>
-                                	</li>
+                                @foreach($accomodations as $accomodation)
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            {{ $accomodation->name }}
+                                        </a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4">
                         <div class="footer-box">
-                        	<h4 class="footer-title">Famous Places</h4>
-                        	<ul class="categoty">
-                        	@foreach($famousPlaces as $famousPlace)
+                            <h4 class="footer-title">Famous Places</h4>
+                            <ul class="categoty">
+                            @foreach($famousPlaces as $famousPlace)
                                 <li>
-                                	<a href="javascript:void(0)">
-                                		{{ $famousPlace->title }} 
-                                	</a>
+                                    <a href="javascript:void(0)">
+                                        {{ $famousPlace->title }} 
+                                    </a>
                                 </li>
                             @endforeach
                             </ul>
@@ -158,15 +171,15 @@
                 <div class="footer-box">
                     <h4 class="footer-title">Gallery</h4>
                     <ul class="gallery-list">
-                    	@foreach($famousPlaces as $famousPlace)
+                        @foreach($famousPlaces as $famousPlace)
                         <li> 
-                        	<a href="javascript:void(0)">
-				                @if($famousPlace->image != null)
-				                    <img style="height: 85px;max-width: 85px" src="<?php echo asset("storage/famous_places/".$famousPlace->image); ?>" title="{{ $famousPlace->title }}"> 
-				                @else
-				                    <img style="height: 85px;max-width: 85px" src="<?php echo asset("storage/famous_places/default.png"); ?>"> 
-				                @endif
-                        	</a>
+                            <a href="javascript:void(0)">
+                                @if($famousPlace->image != null)
+                                    <img style="height: 85px;max-width: 85px" src="<?php echo asset("storage/famous_places/".$famousPlace->image); ?>" title="{{ $famousPlace->title }}"> 
+                                @else
+                                    <img style="height: 85px;max-width: 85px" src="<?php echo asset("storage/famous_places/default.png"); ?>"> 
+                                @endif
+                            </a>
                         </li>
                         @endforeach
                     </ul>
@@ -177,15 +190,18 @@
     <div class="sub-footer">
         <div class="container">
             <div class="row">
-                <div class="col-sm-5">
-                    <p>{{ $webSetting[0]->footer_text }}</p>
+                <div class="col-sm-4">
+                    <p> 
+<!--                         webSetting[0]->footer_text -->
+                        Copyrights © 2018-19 <a href="javascript:void(0)">Egypt Travel</a>&nbsp;-&nbsp;All rights reserved 
+                    </p>
                 </div>
-                <div class="col-sm-7">
+                <div class="col-sm-8">
                     <div class="footer-menu">
                         <ul>
-                        	@foreach($pages as $page)
+                            @foreach($pages as $page)
                             <li>
-                            	<a href="javascript:void(0)">{{ $page->name }}</a>
+                                <a href="javascript:void(0)">{{ $page->name }}</a>
                             </li>
                             @endforeach
                         </ul>
@@ -195,5 +211,4 @@
         </div>
     </div>
 </footer>
-
 @endsection

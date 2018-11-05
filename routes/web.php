@@ -12,8 +12,13 @@
 */
 
 Route::get('/', function () {
+    return redirect()->route('public.site');
+});
+
+Route::get('/admin', function () {
     return redirect()->route('admin.view.login');
 });
+
 
 Route::get('admin/login',['as' => 'admin.view.login','uses' => 'LoginController@viewLogin']);
 Route::post('admin/login',['as' => 'admin.login','uses' => 'LoginController@login_action']);
@@ -26,8 +31,6 @@ Route::get('site/tour_packages',['as' => 'site.tour_packages','uses' => 'Dashboa
 Route::get('site/tour_packages/{package_id}',['as' => 'site.tour_packages.show','uses' => 'DashboardController@package_show']);
 
 Route::post('site/tour_packages/contact',['as' => 'site.tour_packages.contact','uses' => 'DashboardController@package_contact']);
-
-
 
 
 Route::group(['middleware' => ['admin.auth']], function () {

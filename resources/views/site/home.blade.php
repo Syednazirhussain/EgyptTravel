@@ -6,6 +6,19 @@
 	.slider-wrapper{
 		background-image: url("{{ asset("/site/assets/images/1.jpg") }}");
 	}
+
+    .destination{
+        background-image: url("{{ asset("/site/assets/images/7.jpg") }}");
+    }
+
+    .social_link a{
+        color: #898989;
+        font-size: 13px;
+    }
+    .social_link a:hover{
+        color: #fec107;
+    }
+
 </style>
 
 @endsection
@@ -259,12 +272,13 @@
                                 <i class="flaticon-weightlifting" data-toggle="tooltip" data-placement="top" title="" data-original-title="Fitness center"></i>
                                 <i class="flaticon-lemonade" data-toggle="tooltip" data-placement="top" title="" data-original-title="Restaurant"></i>
                             </div>
-                        </div>                            
+                        </div>   
                         <div class="hotel-right"> 
-                            <div class="hotel-person">
-                                <span class="color-blue">${{ $package->prices->price }}</span>
+                            <div class="hotel-person">from 
+                                <span class="color-blue">${{ $package->prices->price }}</span> person
                             </div>
-                        </div>
+                            <a class="thm-btn" href="javascript:void(0)">Details</a>
+                        </div>                         
                     </div>
                 </div>                    
                 @endforeach
@@ -303,18 +317,10 @@
                             </a>
                         </div>
                         <div class="hotel-body">
-                            <div class="ratting">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-half-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <!-- title -->
                             <h3>{{ $accomodation->name }}</h3>
                             <!-- Text Intro -->
                             <p>
-                                <?php echo substr($accomodation->address, 0, 20) . '...'; ?>
+                                <?php echo substr($accomodation->address, 0, 40) . '...'; ?>
                             </p>
                             <div class="free-service">
                                 <i class="flaticon-television" data-toggle="tooltip" data-placement="top" title="" data-original-title="Plasma TV with cable chanels"></i>
@@ -433,7 +439,7 @@
 </section>
 
 <!-- Counter -->
-<section class="counter-inner" style='background-image: url("{{ asset("/site/assets/images/8.jpg") }}")'>
+<section class="counter-inner" style='background-image: url("{{ asset("/site/assets/images/counter.jpg") }}")'>
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
@@ -497,21 +503,27 @@
                     <p>{{ $webSetting[0]->footer_text }}</p>
                     <div class="address">
                         <i class="fa fa-twitter"></i>
-                        <p>
+                        <p class="social_link">
                             <a href="{{ $webSetting[0]->twitter_link }}">Twitter</a>
                         </p>
                     </div>
                     <div class="address">
                         <i class="fa fa-facebook"></i>
-                        <p><a href="{{ $webSetting[0]->facebook_link }}">Facebook</a></p>
+                        <p class="social_link">
+                            <a href="{{ $webSetting[0]->facebook_link }}">Facebook</a>
+                        </p>
                     </div>
                     <div class="address">
                         <i class="fa fa-instagram"></i>
-                        <p><a href="{{ $webSetting[0]->instagram_link }}">Instagram</a></p>
+                        <p class="social_link">
+                            <a href="{{ $webSetting[0]->instagram_link }}">Instagram</a>
+                        </p>
                     </div>
                     <div class="address">
                         <i class="fa fa-google-plus"></i>
-                        <p><a href="{{ $webSetting[0]->google_plus_link }}">admin@gmail.com</a></p>
+                        <p class="social_link">
+                            <a href="{{ $webSetting[0]->google_plus_link }}">admin@gmail.com</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -584,10 +596,13 @@
     <div class="sub-footer">
         <div class="container">
             <div class="row">
-                <div class="col-sm-5">
-                    <p>{{ $webSetting[0]->footer_text }}</p>
+                <div class="col-sm-4">
+                    <p> 
+<!--                         webSetting[0]->footer_text -->
+                        Copyrights © 2018-19 <a href="javascript:void(0)">Egypt Travel</a>&nbsp;-&nbsp;All rights reserved 
+                    </p>
                 </div>
-                <div class="col-sm-7">
+                <div class="col-sm-8">
                     <div class="footer-menu">
                         <ul>
                         	@foreach($pages as $page)

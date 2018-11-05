@@ -10,6 +10,10 @@ use App\Models\Accomodation;
 use App\Models\FamousPlaces;
 use App\Models\Page;
 use App\Models\WebSetting;
+use App\Models\Price;
+use Illuminate\Support\Facades\Input;
+use Mail;
+use DB;
 
 class DashboardController extends Controller
 {
@@ -115,104 +119,11 @@ class DashboardController extends Controller
         return view('site.about',$data);
     }
 
-    public function accomodation()
-    {
-        $packages = Package::all();
-        $famousPlaces = FamousPlaces::take(6)->get();
-        $accomodations = Accomodation::all();
-        $pages = Page::all();
-        $webSetting = WebSetting::all();
-
-        $accomodationImage = [];
-
-        foreach ($accomodations as $accomodation) 
-        {   
-            $imageArr = explode("|", $accomodation->gallery_images);
-            if(!empty($imageArr))
-            {
-                $accomodationImage[$accomodation->id] = $imageArr[0];
-            }
-        }
-
-        $data = [
-            'packages'          => $packages,
-            'famousPlaces'      => $famousPlaces,
-            'accomodations'     => $accomodations,
-            'accomodationImage' => $accomodationImage,
-            'pages'             => $pages,
-            'webSetting'        => $webSetting
-        ];
-
-        return view('site.accomodation',$data);
-    }
-
-    public function nile_curises()
-    {
-        $packages = Package::where('category_code','nile_cruises')->get();
-        $famousPlaces = FamousPlaces::take(6)->get();
-        $accomodations = Accomodation::all();
-        $pages = Page::all();
-        $webSetting = WebSetting::all();
-
-        $accomodationImage = [];
-
-        foreach ($accomodations as $accomodation) 
-        {   
-            $imageArr = explode("|", $accomodation->gallery_images);
-            if(!empty($imageArr))
-            {
-                $accomodationImage[$accomodation->id] = $imageArr[0];
-            }
-        }
-
-        $data = [
-            'packages'          => $packages,
-            'famousPlaces'      => $famousPlaces,
-            'accomodations'     => $accomodations,
-            'accomodationImage' => $accomodationImage,
-            'pages'             => $pages,
-            'webSetting'        => $webSetting
-        ];
-
-        return view('site.nile_cruises',$data);
-    }
-
-
-    public function tour_package()
-    {
-        $packages = Package::all();
-        $famousPlaces = FamousPlaces::take(6)->get();
-        $accomodations = Accomodation::all();
-        $pages = Page::all();
-        $webSetting = WebSetting::all();
-
-        $accomodationImage = [];
-
-        foreach ($accomodations as $accomodation) 
-        {   
-            $imageArr = explode("|", $accomodation->gallery_images);
-            if(!empty($imageArr))
-            {
-                $accomodationImage[$accomodation->id] = $imageArr[0];
-            }
-        }
-
-        $data = [
-            'packages'          => $packages,
-            'famousPlaces'      => $famousPlaces,
-            'accomodations'     => $accomodations,
-            'accomodationImage' => $accomodationImage,
-            'pages'             => $pages,
-            'webSetting'        => $webSetting
-        ];
-
-        return view('site.tour_packages',$data);
-    }
-
 
     public function package_show($package_id)
     {
         $package = Package::find($package_id);
+
         if(!empty($package))
         {
             $data = [
@@ -238,6 +149,7 @@ class DashboardController extends Controller
             'email' => 'required|email|unique:users,email',
             'mobile' => 'required|max:15|min:11'
         ]);
+
         
         if ($validator->fails())
         {
@@ -246,15 +158,324 @@ class DashboardController extends Controller
         else
         {
             $input = $request->all();
-            print_r($input);
+            $package = Package::find($input['package_id']);
+
+            $admin = User::where('user_role_code','admin')->first();
+
+            $emails = [
+                $input['email'],
+                $admin->email
+            ];
+
+            $payload = [
+                'package_title'     => $package->title,
+                'price_title'       => $package->prices->title,
+                'price_label'       => $package->prices->label,
+                'price_amount'      => $package->prices->price,
+                'description'       => $package->description,
+                'category_code'     => $package->category_code,
+                'covering_sight'    => $package->covering_sight,
+                'discount'          => $package->discount,
+                'travelling_dates'  => $package->traveling_date,
+                'day'               => $package->day,
+                'night'             => $package->night,
+                'accomodation_name' => ""
+            ];
+
+
+
+            foreach ($emails as $email) 
+            {
+                if($admin->email == $email)
+                {
+                    $payload['name'] = $admin->name;
+                    if(isset($payload['email']))
+                    {
+                        unset($payload['email']);
+                    }
+                    $payload['email'] = $email;
+                    $payload['phone'] = $input['mobile'];
+                    $payload['user_email'] = $input['email'];
+
+                    Mail::send('email.admin_package_contact' , $payload, function($message) use( $payload ) {
+                         $message->to($payload['email'])->subject('Acknowledgement');
+                    });
+                }
+                else
+                {   
+                    if(isset($payload['email']))
+                    {
+                        unset($payload['email']);
+                    }
+                    $payload['email'] = $email;
+
+                    Mail::send('email.user_package_contact' ,$payload, function($message) use ($payload){
+                         $message->to($payload['email'])->subject('Acknowledgement');
+                    });
+                }
+            }
+
+            $data = [
+                'status'    => 'success',
+                'payload'   => $input
+            ];
+
+            return response()->json($data);
+
+        }
+    }
+
+    public function accomodation()
+    {
+        if (Input::has('search'))
+        {
+            $keyword = Input::get('search');
+            $accomodations = Accomodation::where('name','like','%'.$keyword.'%')
+                                ->orWhere('address','like','%'.$keyword.'%')
+                                ->paginate(2);
+            $search['search'] = $keyword;
+        }
+        else
+        {
+            $accomodations = Accomodation::paginate(2);
+            $search = [];
         }
 
+        $packages = Package::all();
+        $famousPlaces = FamousPlaces::take(6)->get();
+        $pages = Page::all();
+        $webSetting = WebSetting::all();
+
+        $accomodationImage = [];
+
+        foreach ($accomodations as $accomodation) 
+        {   
+            $imageArr = explode("|", $accomodation->gallery_images);
+            if(!empty($imageArr))
+            {
+                $accomodationImage[$accomodation->id] = $imageArr[0];
+            }
+        }
+
+        $data = [
+            'packages'          => $packages,
+            'famousPlaces'      => $famousPlaces,
+            'accomodations'     => $accomodations,
+            'accomodationImage' => $accomodationImage,
+            'pages'             => $pages,
+            'webSetting'        => $webSetting,
+            'search'            => $search
+        ];
+
+        return view('site.accomodation',$data);
+    }
+
+    public function nile_curises()
+    {
+        if (Input::has('search'))
+        {
+            $keyword = Input::get('search');
+
+            $packages = Package::where('category_code','nile_cruises')
+                                ->where('title','like','%'.$keyword.'%')
+                                ->orWhere('category_code','like','%'.$keyword.'%')
+                                ->orWhere('covering_sight','like','%'.$keyword.'%')
+                                ->paginate(2);
+
+            $search['search'] = $keyword;
+        }
+        elseif (Input::has('price')) 
+        {
+            $price_range = Input::get('price');
+            $price_arr = explode("-", $price_range);
+            $min = $price_arr[0];        
+            $max = $price_arr[1];
+            $prices_ids = Price::whereBetween('price', [$min, $max])->get(['id']);
+            $ids = [];
+            foreach ($prices_ids as  $price) 
+            {
+                array_push($ids, $price->id);
+            }
+            $packages = Package::whereIn('price_id', $ids)
+                        ->where('category_code','nile_cruises')
+                        ->paginate(2);
+            $search['price'] = "price in ".$price_range;
+        }
+        elseif (Input::has('month')) 
+        {
+            $month = Input::get('month');
+            $months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            $current_year = date('Y');
+            $search_start_date = $current_year."-".$month."-01";
+            $search_end_date = $current_year."-".$month."-30";
+            $packages = Package::whereBetween('traveling_date',[$search_start_date,$search_end_date])
+                        ->where('category_code','nile_cruises')
+                        ->paginate(2);
+            $count = 1;
+            foreach ($months as  $value) {
+                if($month == $count)
+                {
+                    $search['month'] = "Month of ".$value;
+                }
+                $count++;
+            }
+        }
+        elseif (Input::has('night')) 
+        {
+            $night = Input::get('night');
+            $seprate = explode("-", $night);
+
+            $min = $seprate[0];
+            $max = $seprate[1];
+            if($min == 12 && $max == 'above')
+            {
+                $packages = Package::where('night','>=',$min)
+                                    ->where('category_code','nile_cruises')
+                                    ->paginate(2);
+            }
+            else
+            {
+                $packages = Package::whereBetween('night',[$min,$max])
+                                    ->where('category_code','nile_cruises')
+                                    ->paginate(2);
+            }
+            $search['night'] = "Night in ".$night;
+        }
+        else
+        {
+            $current_date = date('Y-m-d');
+            $packages = Package::where('category_code','nile_cruises')
+                                ->where('traveling_date','>=',$current_date)
+                                ->paginate(2);
+            $search = [];
+        }
+
+        $famousPlaces = FamousPlaces::take(6)->get();
+        $accomodations = Accomodation::all();
+        $pages = Page::all();
+        $webSetting = WebSetting::all();
+
+        $accomodationImage = [];
+
+        foreach ($accomodations as $accomodation) 
+        {   
+            $imageArr = explode("|", $accomodation->gallery_images);
+            if(!empty($imageArr))
+            {
+                $accomodationImage[$accomodation->id] = $imageArr[0];
+            }
+        }
+
+        $data = [
+            'packages'          => $packages,
+            'famousPlaces'      => $famousPlaces,
+            'accomodations'     => $accomodations,
+            'accomodationImage' => $accomodationImage,
+            'pages'             => $pages,
+            'webSetting'        => $webSetting,
+            'search'            => $search
+        ];
+
+        return view('site.nile_cruises',$data);
     }
 
 
+    public function tour_package()
+    {
+        if (Input::has('search'))
+        {
+            $keyword = Input::get('search');
 
+            $packages = Package::where('title','like','%'.$keyword.'%')
+                                ->orWhere('category_code','like','%'.$keyword.'%')
+                                ->orWhere('covering_sight','like','%'.$keyword.'%')
+                                ->paginate(2);
+            $search['search'] = $keyword;
+        }
+        elseif (Input::has('price')) 
+        {
+            $price_range = Input::get('price');
+            $price_arr = explode("-", $price_range);
+            $min = $price_arr[0];        
+            $max = $price_arr[1];
+            $prices_ids = Price::whereBetween('price', [$min, $max])->get(['id']);
+            $ids = [];
+            foreach ($prices_ids as  $price) 
+            {
+                array_push($ids, $price->id);
+            }
+            $packages = Package::whereIn('price_id', $ids)->paginate(2);
+            $search['price'] = "price in ".$price_range;
+        }
+        elseif (Input::has('month')) 
+        {
+            $month = Input::get('month');
+            $months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            $current_year = date('Y');
+            $search_start_date = $current_year."-".$month."-01";
+            $search_end_date = $current_year."-".$month."-30";
+            $packages = Package::whereBetween('traveling_date',[$search_start_date,$search_end_date])->paginate(2);
+            $count = 1;
+            foreach ($months as  $value) {
+                if($month == $count)
+                {
+                    $search['month'] = "Month of ".$value;
+                }
+                $count++;
+            }
+        }
+        elseif (Input::has('night')) 
+        {
+            $night = Input::get('night');
+            $seprate = explode("-", $night);
 
+            $min = $seprate[0];
+            $max = $seprate[1];
+            if($min == 12 && $max == 'above')
+            {
+                $packages = Package::where('night','>=',$min)->paginate(2);
+            }
+            else
+            {
+                $packages = Package::whereBetween('night',[$min,$max])->paginate(2);
+            }
+            $search['night'] = "Night in ".$night;
+        }
+        else
+        {
+            $current_date = date('Y-m-d');
+            $packages = Package::where('traveling_date','>=',$current_date)->paginate(2);
+            $search = [];
+        }
 
+        $prices = Price::all();
+        $famousPlaces = FamousPlaces::take(6)->get();
+        $accomodations = Accomodation::all();
+        $pages = Page::all();
+        $webSetting = WebSetting::all();
 
+        $accomodationImage = [];
+
+        foreach ($accomodations as $accomodation) 
+        {   
+            $imageArr = explode("|", $accomodation->gallery_images);
+            if(!empty($imageArr))
+            {
+                $accomodationImage[$accomodation->id] = $imageArr[0];
+            }
+        }
+
+        $data = [
+            'packages'          => $packages,
+            'famousPlaces'      => $famousPlaces,
+            'accomodations'     => $accomodations,
+            'accomodationImage' => $accomodationImage,
+            'pages'             => $pages,
+            'webSetting'        => $webSetting,
+            'prices'            => $prices,
+            'search'            => $search
+        ];
+        return view('site.tour_packages',$data);
+    }
 
 }

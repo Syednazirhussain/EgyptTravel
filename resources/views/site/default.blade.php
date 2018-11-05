@@ -41,14 +41,15 @@
                             <li><a href="{{ route('site.accomodation') }}">Accomodation</a></li>
                             <li><a href="{{ route('site.nile_curises') }}">Nile Cruises</a></li>
                             <li><a href="{{ route('site.tour_packages') }}">Tour Packages</a></li>
-                            <li class="dropdown">
+                            <li><a href="javascript:void(0)">Contact Us</a></li>
+<!--                             <li class="dropdown">
                                 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">FAQ</span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="javascript:void(0)">Thing to do</a></li>
                                     <li><a href="javascript:void(0)">How to travel</a></li>
                                     <li><a href="javascript:void(0)">Travel Help</a></li>
                                 </ul>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </div>
@@ -82,6 +83,9 @@
         <!-- custom -->
         <script src="{{ asset('/site/assets/js/custom.js') }}" type="text/javascript"></script>
 
+
+
+        <script src="{{ asset('/assets/js/pixeladmin.min.js') }}"></script>
         <script src="{{ asset('/assets/js/jquery.validate.min.js') }}"></script>
 
 
@@ -99,8 +103,28 @@
 
             console.log(lastUrlString);
 
+            // $('ul.nav li a').click(function() {
+            //     $('ul.nav li.active').removeClass('active');
+            //     $(this).closest('li').addClass('active');
+            // });
+
+            // $('ul li a').on('click', function(){
+            //     var item = $(this).text();
+            //     $(this).parent().addClass('active').siblings().removeClass('active');
+            // });
+
+
+            // console.log($('ul.nav').children('li.active').find('a').text());
+
+            // $('ul.nav li').click(function(){
+            //     $(this).each(function(index,value){
+
+            //     });
+            // });
+
             if(lastUrlString == 'home')
             {
+
                 $('ul.nav li:nth-child(2)').removeClass('active');
                 $('ul.nav li:nth-child(1)').addClass('active');
             }
@@ -127,9 +151,9 @@
 
 
 
-            $('ul#dropdown > li').hover(function () {
-                $(this).toggleClass('active').siblings().removeClass('active');
-            });
+            // $('ul#dropdown > li').hover(function () {
+            //     $(this).toggleClass('active').siblings().removeClass('active');
+            // });
 
 
         </script>

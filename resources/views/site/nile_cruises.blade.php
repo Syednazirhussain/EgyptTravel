@@ -1,6 +1,27 @@
 @extends('site.default')
 
 
+@section('css')
+
+<style type="text/css">
+
+    .social_link a{
+        color: #898989;
+        font-size: 13px;
+    }
+    .social_link a:hover{
+        color: #fec107;
+    }
+
+    .pagination>li.active>span{
+        background-color: #fec107;
+        border: none;
+    }
+    
+</style>
+
+@endsection
+
 
 @section('logo')
 <a class="navbar-brand" href="{{ route('public.site') }}">
@@ -43,116 +64,123 @@
             <div class="col-sm-12">
                 <div class="tools-ber">
                     <div class="row">
+
                         <div class="col-sm-3 col-md-3 hidden-xs">
-                            <div class="input-group custom-search">
-                                <input type="text" class="form-control" placeholder="Search" />
-                                <span class="input-group-btn">
-                                    <button class="btn hotel-search" type="button">
-                                        <span class="fa fa-search"></span>
-                                    </button>
-                                </span>
+                            <form action="{{ route('site.nile_curises') }}" id="searchForm" method="GET">
+                                <div class="input-group custom-search">
+                                    <input type="text" class="form-control" name="search" id="search" placeholder="Search" value="@if(isset($search['search'])){{ $search['search']}}@endif" />
+                                    <span class="input-group-btn">
+                                        <button class="btn hotel-search" type="button">
+                                            <span class="fa fa-search"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-xs-6 col-sm-3 col-md-2">
+                            <div class="select-filters">
+                                <form action="{{ route('site.nile_curises') }}" method="GET" id="searchByPrice">
+                                    <select name="price" id="sort_price">
+                                        <option value="0">All Prices</option>
+                                        <option value="100-200">100 to 200</option>
+                                        <option value="200-400">200 to 400</option>
+                                        <option value="400-600">400 to 600</option>
+                                        <option value="600-800">600 to 800</option>
+                                    </select>
+                                </form>
                             </div>
                         </div>
                         <div class="col-xs-6 col-sm-3 col-md-2">
-                            <!-- filters select -->
                             <div class="select-filters">
-                                <select name="sort_price" id="sort-price">
-                                    <option value="" selected="">Sort by price</option>
-                                    <option value="lower">Lowest price</option>
-                                    <option value="higher">Highest price</option>
-                                </select>
+                                <form action="{{ route('site.nile_curises') }}" method="GET" id="searchByMonth">
+                                    <select name="month" id="sort_month">
+                                        <option value="0">Month Of Travel</option>
+                                    </select>
+                                </form>
                             </div>
                         </div>
                         <div class="col-xs-6 col-sm-3 col-md-2">
-                            <!-- filters select -->
                             <div class="select-filters">
-                                <select name="sort_price" id="sort-rank">
-                                    <option value="" selected="">Sort by ranking</option>
-                                    <option value="lower">Rank one</option>
-                                    <option value="higher">Rank one</option>
-                                </select>
+                                <form action="{{ route('site.nile_curises') }}" method="GET" id="searchByNight">
+                                    <select name="night" id="sort_night">
+                                        <option value="0">Duration</option>
+                                        <option value="1-7">Less than 7 nights</option>
+                                        <option value="8-12">8 to 12 nights</option>
+                                        <option value="12-above">More than 12 nights</option>
+                                    </select>
+                                </form>
                             </div>
                         </div>
-                        <div class="col-sm-3 col-md-5 hidden-xs text-right">
+
+<!--                         <div class="col-sm-3 col-md-5 hidden-xs text-right">
                             <a class="filters-btn collapse" data-toggle="collapse" href="#collapseMap"  onclick="init();"><i class="flaticon-earth-globe"></i></a>
                             <a href="javascript:void(0)" class="filters-btn"><i class="flaticon-squares-gallery-grid-layout-interface-symbol"></i></a>
                             <a href="javascript:void(0)" class="filters-btn"><i class="flaticon-bulleted-list"></i></a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
+
             <!-- collapse map -->
-            <div class="col-sm-12">
+<!--             <div class="col-sm-12">
                 <div class="collapse" id="collapseMap">
-                    <!-- The element that will contain Google Map. This is used in both the Javascript and CSS above. --> 
                     <div id="map"></div>
                 </div>
+            </div> -->
+
+            @if(isset($search))
+            <div class="col-sm-12 col-md-12" id="searchBy">
+                @if(isset($search['search']))
+                    <h5 class="m-t-0 p-t-0" ><em>Search By&nbsp;:</em> {{ $search['search'] }}</h5>
+                @elseif(isset($search['price']))
+                    <h5 class="m-t-0 p-t-0" ><em>Search By&nbsp;:</em> {{ $search['price'] }}</h5>
+                @elseif(isset($search['month']))
+                    <h5 class="m-t-0 p-t-0" ><em>Search By&nbsp;:</em> {{ $search['month'] }}</h5>
+                @endif
             </div>
+            @endif
             
             <div class="col-sm-12 col-md-12">
                 <div class="hotel-list-content">
                     @foreach($packages as $package)
                         <div class="hotel-item">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="hotel-image">
-                                        <a href="javascript:void(0)">
-                                            <div class="img">
-                                                @if($package->feature_image != null)
-                                                    <img style="height: 293px;width: 367px" class="img-responsive" src="<?php echo asset("storage/packages/".$package->feature_image); ?>"> 
-                                                @else
-                                                    <img style="height: 293px;width: 367px" class="img-responsive" src="<?php echo asset("storage/packages/default.png"); ?>"> 
-                                                @endif 
-                                            </div>
-                                        </a>
+                            <div class="hotel-image">
+                                <a href="javascript:void(0)">
+                                    <div class="img">
+                                        @if($package->feature_image != null)
+                                            <img style="height: 200px; width: 400px" class="img-responsive" src="<?php echo asset("storage/packages/".$package->feature_image); ?>"> 
+                                        @else
+                                            <img style="height: 200px; width: 400px" class="img-responsive" src="<?php echo asset("storage/packages/default.png"); ?>"> 
+                                        @endif 
                                     </div>
-                                    <div class="hotel-body">
-                                        <h3>{{ $package->title }}</h3>
-                                        <p>
-                                            <span>Covering Sight</span>&#58;
-                                            <span>{{ $package->covering_sight }}</span>
-                                            <p>{{ $package->prices->title }}</p>
-                                        </p>
-                                        <p>
-                                            <span>From&nbsp;{{ $package->day }}&nbsp;days&nbsp;To&nbsp;{{ $package->night }}&nbsp;nights</span>
-                                        </p>
-                                        <div class="free-service">
-                                            <i class="flaticon-television" data-toggle="tooltip" data-placement="top" title="" data-original-title="Plasma TV with cable chanels"></i>
-                                            <i class="flaticon-swimmer" data-toggle="tooltip" data-placement="top" title="" data-original-title="Swimming pool"></i>
-                                            <i class="flaticon-wifi" data-toggle="tooltip" data-placement="top" title="" data-original-title="Free wifi"></i>
-                                            <i class="flaticon-weightlifting" data-toggle="tooltip" data-placement="top" title="" data-original-title="Fitness center"></i>
-                                            <i class="flaticon-lemonade" data-toggle="tooltip" data-placement="top" title="" data-original-title="Restaurant"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-offset-2 col-md-4">
-                                    <div class="hotel-right"> 
-                                        <div class="hotel-person">from <span class="color-blue">$273</span></div>
-                                        <a class="thm-btn" href="javascript:void(0)">Details</a>
-                                    </div>
-                                </div>
-                        </div>
-
+                                </a>
                             </div>
+                            <div class="hotel-body">
+                                <h3>{{ $package->title }}</h3>
+                                <p>
+                                    <span>Covering Sight</span>&#58;
+                                    <span>{{ $package->covering_sight }}</span>
+                                    <p>{{ $package->prices->title }}</p>
+                                </p>
+                                <p>
+                                    <span>From&nbsp;{{ $package->day }}&nbsp;days&nbsp;To&nbsp;{{ $package->night }}&nbsp;nights</span>
+                                </p>
+                                <div class="free-service">
+                                    <i class="flaticon-television" data-toggle="tooltip" data-placement="top" title="" data-original-title="Plasma TV with cable chanels"></i>
+                                    <i class="flaticon-swimmer" data-toggle="tooltip" data-placement="top" title="" data-original-title="Swimming pool"></i>
+                                    <i class="flaticon-wifi" data-toggle="tooltip" data-placement="top" title="" data-original-title="Free wifi"></i>
+                                    <i class="flaticon-weightlifting" data-toggle="tooltip" data-placement="top" title="" data-original-title="Fitness center"></i>
+                                    <i class="flaticon-lemonade" data-toggle="tooltip" data-placement="top" title="" data-original-title="Restaurant"></i>
+                                </div>
+                            </div>
+                            <div class="hotel-right"> 
+                                <div class="hotel-person">from <span class="color-blue">$273</span></div>
+                                <a class="thm-btn" href="javascript:void(0)">Details</a>
+                            </div>
+                        </div>
                     @endforeach
                 </div>
-                <!-- pagination -->
-                <div class="pagination-inner">
-                    <!-- pager -->
-                    <ul class="pager">
-                        <li class="previous"><a href="#">Previous</a></li>
-                        <li class="next"><a href="#">Next</a></li>
-                    </ul>
-                    <!-- pagination -->
-                    <ul class="pagination">
-                        <li><a href="#">1</a></li>
-                        <li class="active"><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">...</a></li>
-                        <li><a href="#">15</a></li>
-                    </ul>
-                </div>
+                {{ $packages->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>
@@ -171,21 +199,27 @@
                     <p>{{ $webSetting[0]->footer_text }}</p>
                     <div class="address">
                         <i class="fa fa-twitter"></i>
-                        <p>
+                        <p class="social_link">
                             <a href="{{ $webSetting[0]->twitter_link }}">Twitter</a>
                         </p>
                     </div>
                     <div class="address">
                         <i class="fa fa-facebook"></i>
-                        <p><a href="{{ $webSetting[0]->facebook_link }}">Facebook</a></p>
+                        <p class="social_link">
+                            <a href="{{ $webSetting[0]->facebook_link }}">Facebook</a>
+                        </p>
                     </div>
                     <div class="address">
                         <i class="fa fa-instagram"></i>
-                        <p><a href="{{ $webSetting[0]->instagram_link }}">Instagram</a></p>
+                        <p class="social_link">
+                            <a href="{{ $webSetting[0]->instagram_link }}">Instagram</a>
+                        </p>
                     </div>
                     <div class="address">
                         <i class="fa fa-google-plus"></i>
-                        <p><a href="{{ $webSetting[0]->google_plus_link }}">admin@gmail.com</a></p>
+                        <p class="social_link">
+                            <a href="{{ $webSetting[0]->google_plus_link }}">admin@gmail.com</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -195,12 +229,12 @@
                         <div class="footer-box">
                             <h4 class="footer-title">Packages</h4>
                             <ul class="categoty">
-                            	@foreach($packages as $package)
-	                                <li>
-	                                	<a href="javascript:void(0)">
-	                                		{{ $package->title }}
-	                                	</a>
-	                                </li>
+                                @foreach($packages as $package)
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            {{ $package->title }}
+                                        </a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -209,25 +243,25 @@
                         <div class="footer-box">
                             <h4 class="footer-title">Hotels</h4>
                             <ul class="categoty">
-                            	@foreach($accomodations as $accomodation)
-                                	<li>
-                                		<a href="javascript:void(0)">
-                                			{{ $accomodation->name }}
-                                		</a>
-                                	</li>
+                                @foreach($accomodations as $accomodation)
+                                    <li>
+                                        <a href="javascript:void(0)">
+                                            {{ $accomodation->name }}
+                                        </a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4">
                         <div class="footer-box">
-                        	<h4 class="footer-title">Famous Places</h4>
-                        	<ul class="categoty">
-                        	@foreach($famousPlaces as $famousPlace)
+                            <h4 class="footer-title">Famous Places</h4>
+                            <ul class="categoty">
+                            @foreach($famousPlaces as $famousPlace)
                                 <li>
-                                	<a href="javascript:void(0)">
-                                		{{ $famousPlace->title }} 
-                                	</a>
+                                    <a href="javascript:void(0)">
+                                        {{ $famousPlace->title }} 
+                                    </a>
                                 </li>
                             @endforeach
                             </ul>
@@ -239,15 +273,15 @@
                 <div class="footer-box">
                     <h4 class="footer-title">Gallery</h4>
                     <ul class="gallery-list">
-                    	@foreach($famousPlaces as $famousPlace)
+                        @foreach($famousPlaces as $famousPlace)
                         <li> 
-                        	<a href="javascript:void(0)">
-				                @if($famousPlace->image != null)
-				                    <img style="height: 85px;max-width: 85px" src="<?php echo asset("storage/famous_places/".$famousPlace->image); ?>" title="{{ $famousPlace->title }}"> 
-				                @else
-				                    <img style="height: 85px;max-width: 85px" src="<?php echo asset("storage/famous_places/default.png"); ?>"> 
-				                @endif
-                        	</a>
+                            <a href="javascript:void(0)">
+                                @if($famousPlace->image != null)
+                                    <img style="height: 85px;max-width: 85px" src="<?php echo asset("storage/famous_places/".$famousPlace->image); ?>" title="{{ $famousPlace->title }}"> 
+                                @else
+                                    <img style="height: 85px;max-width: 85px" src="<?php echo asset("storage/famous_places/default.png"); ?>"> 
+                                @endif
+                            </a>
                         </li>
                         @endforeach
                     </ul>
@@ -258,15 +292,17 @@
     <div class="sub-footer">
         <div class="container">
             <div class="row">
-                <div class="col-sm-5">
-                    <p>{{ $webSetting[0]->footer_text }}</p>
+                <div class="col-sm-4">
+                    <p> 
+                        Copyrights © 2018-19 <a href="javascript:void(0)">Egypt Travel</a>&nbsp;-&nbsp;All rights reserved 
+                    </p>
                 </div>
-                <div class="col-sm-7">
+                <div class="col-sm-8">
                     <div class="footer-menu">
                         <ul>
-                        	@foreach($pages as $page)
+                            @foreach($pages as $page)
                             <li>
-                            	<a href="javascript:void(0)">{{ $page->name }}</a>
+                                <a href="javascript:void(0)">{{ $page->name }}</a>
                             </li>
                             @endforeach
                         </ul>
@@ -276,5 +312,50 @@
         </div>
     </div>
 </footer>
+@endsection
+
+@section('js')
+
+<script type="text/javascript">
+
+    $('#sort_price').on('change', function() {
+        $('#searchByPrice').submit();
+    });
+
+    $('#sort_month').on('change', function() {
+        if($(this).val() != 0)
+        {
+            $('#searchByMonth').submit();
+        }
+    });
+
+    $('#sort_night').on('change', function() {
+        if($(this).val() != 0)
+        {
+            $('#searchByNight').submit();
+        }
+    });
+
+    $('#search').bind("enterKey",function(e){
+        
+        $('#searchForm').submit();
+    });
+
+    $('#search').keyup(function(e){
+        if(e.keyCode == 13)
+        {
+            $(this).trigger("enterKey");
+        }
+    });
+
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var month = (new Date()).getMonth();
+    for (; month < monthNames.length; month++) 
+    {
+        $('#sort_month').append('<option value='+(month+1)+'>' + monthNames[month] + '</option>');
+    }
+
+
+</script>
 
 @endsection

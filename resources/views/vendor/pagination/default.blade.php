@@ -1,20 +1,19 @@
 @if ($paginator->hasPages())
-    <ul class="pagination">
-        {{-- Previous Page Link --}}
-        @if ($paginator->onFirstPage())
-            <li class="disabled"><span>&laquo;</span></li>
-        @else
-            <li><a href="{{ $paginator->previousPageUrl() }}" rel="prev">&laquo;</a></li>
+<div class="pagination-inner">
+    <ul class="pager">
+        @if (!$paginator->onFirstPage())
+            <li class="previous"><a href="{{ $paginator->previousPageUrl() }}" rel="prev">Previous</a></li>
         @endif
 
-        {{-- Pagination Elements --}}
+        @if ($paginator->hasMorePages())
+            <li class="next"><a href="{{ $paginator->nextPageUrl() }}" rel="next">Next</a></li>
+        @endif
+    </ul>
+    <ul class="pagination">
         @foreach ($elements as $element)
-            {{-- "Three Dots" Separator --}}
             @if (is_string($element))
                 <li class="disabled"><span>{{ $element }}</span></li>
             @endif
-
-            {{-- Array Of Links --}}
             @if (is_array($element))
                 @foreach ($element as $page => $url)
                     @if ($page == $paginator->currentPage())
@@ -25,12 +24,24 @@
                 @endforeach
             @endif
         @endforeach
-
-        {{-- Next Page Link --}}
-        @if ($paginator->hasMorePages())
-            <li><a href="{{ $paginator->nextPageUrl() }}" rel="next">&raquo;</a></li>
-        @else
-            <li class="disabled"><span>&raquo;</span></li>
-        @endif
     </ul>
+</div>
 @endif
+
+                <!-- pagination -->
+<!--                 <div class="pagination-inner"> -->
+                    <!-- pager -->
+<!--                     <ul class="pager">
+                        <li class="previous"><a href="#">Previous</a></li>
+                        <li class="next"><a href="#">Next</a></li>
+                    </ul> -->
+                    <!-- pagination -->
+<!--                     <ul class="pagination">
+                        <li><a href="#">1</a></li>
+                        <li class="active"><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">...</a></li>
+                        <li><a href="#">15</a></li>
+                    </ul> -->
+<!--                 </div> -->

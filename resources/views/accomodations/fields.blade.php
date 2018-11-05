@@ -195,8 +195,8 @@
              theme: 'thumbnails',
              enableApi: true,
              addMore: true,
-            limit: 4,
-            fileMaxSize: 2,
+             limit: 4,
+             fileMaxSize: 2,
              thumbnails: {
                  box: '<div class="fileuploader-items">' +
                            '<ul class="fileuploader-items-list">' +
@@ -334,7 +334,7 @@
                api.open();
             });
          },
-       });
+    });
 
     // Initialize Summernote
     $(function() {
