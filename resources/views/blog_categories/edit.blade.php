@@ -30,7 +30,7 @@
                         <div class="panel-title">@if(isset($blogCategory)){{ $blogCategory->name  }}@endif</div>
                     </div>
                     <div class="panel-body">
-                        <form action="{{ route('admin.blogCategories.update',[$blogCategory->id]) }}" method="POST"  id="blogcategory">
+                        <form action="{{ route('admin.blogCategories.update',[$blogCategory->id]) }}" method="POST"  id="blogcategory" enctype="multipart/form-data">
                           @include('blog_categories.fields')
                         </form>
                     </div>

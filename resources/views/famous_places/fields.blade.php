@@ -19,11 +19,39 @@
 
   <div class="col-sm-12 col-md-12">
 
-    <div class="col-md-6 m-t-4">
+    <div class="col-md-6">
+
+      <div class="col-sm-12  form-group">
+        <label for="famous_place_cat_id">Blog Category</label>
+        <select type="text" name="famous_place_cat_id" id="famous_place_cat_id" class="form-control">
+          @if(isset($blogCategorys))
+            @foreach($blogCategorys as $blogCategory)
+              @if(isset($famousPlace))
+
+                @if($famousPlace->famous_place_cat_id == $blogCategory->id)
+                  <option value="{{ $blogCategory->id }}" selected="selected">{{ $blogCategory->name }}</option>
+                @else
+                  <option value="{{ $blogCategory->id }}">{{ $blogCategory->name }}</option>
+                @endif
+
+              @else
+                <option value="{{ $blogCategory->id }}">{{ $blogCategory->name }}</option>
+              @endif
+            @endforeach
+          @endif
+        </select>
+      </div>
+
       <div class="col-sm-12 form-group">
           <label for="title">Title</label>
           <input type="text" name="title" id="title" class="form-control" value="@if(isset($famousPlace)){{ $famousPlace->title }}@endif">
       </div>
+
+      <div class="col-sm-12  form-group">
+        <label for="tags">Tags</label>
+        <input type="text" id="tags" name="tags" value="@if(isset($famousPlace)){{ $famousPlace->tags }}@endif" class="form-control languages" data-role="tagsinput" />
+      </div>
+
     </div>
 
     <div class="col-md-6">
@@ -213,6 +241,13 @@
 	          }
 	        }
 	    });
+
+      // Initialize Select2
+      $(function() {
+        $('#famous_place_cat_id').select2({
+          placeholder: 'Select value',
+        });
+      });
 
 	   // Initialize Summernote
 	    $(function() {

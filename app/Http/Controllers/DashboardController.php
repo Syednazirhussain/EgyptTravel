@@ -8,6 +8,7 @@ use App\User;
 use App\Models\Package;
 use App\Models\Accomodation;
 use App\Models\FamousPlaces;
+use App\Models\BlogCategory;
 use App\Models\Page;
 use App\Models\WebSetting;
 use App\Models\Price;
@@ -192,8 +193,10 @@ class DashboardController extends Controller
 
     public function famous_places($famous_place_id)
     {
-        $famous_place = FamousPlaces::find($famous_place_id);
 
+        $famous_place = FamousPlaces::find($famous_place_id);
+        $place_categorys = BlogCategory::with('famousPlaces:id,title,image')->get();
+        
         $packages = Package::all();
         $famousPlaces = FamousPlaces::take(6)->get();
         $accomodations = Accomodation::all();
@@ -223,6 +226,11 @@ class DashboardController extends Controller
         if(!empty($famous_place))
         {
             $data['famousPlaceDetail']  = $famous_place;
+        }
+
+        if(!empty($place_categorys))
+        {
+            $data['place_categorys']  = $place_categorys;
         }
 
         return view('site.famous_places_detail',$data);

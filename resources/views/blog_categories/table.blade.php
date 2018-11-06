@@ -1,6 +1,7 @@
 <table class="table table-responsive" id="datatables">
     <thead>
         <tr>
+            <th width="150px">Image</th>
             <th>Name</th>
             <th>Action</th>
         </tr>
@@ -8,14 +9,14 @@
     <tbody>
     @foreach($blogCategories as $blogCategory)
         <tr>
-            <td>{!! $blogCategory->name !!}</td>
             <td>
                 @if($blogCategory->image != null)
-                    <img class="img-thumbnail" src="<?php echo asset("storage/famous_places/".$famousPlaces->image); ?>" title="{{ $famousPlaces->title }}" style="width: 75px; height:75px;"> 
+                    <img class="img-thumbnail" src="<?php echo asset("storage/place_category/".$blogCategory->image); ?>" title="{{ $blogCategory->title }}" style="width: 75px; height:75px;"> 
                 @else
-                    <img class="img-thumbnail" src="<?php echo asset("storage/famous_places/default.png"); ?>" style="width: 75px; height:75px;"> 
+                    <img class="img-thumbnail" src="<?php echo asset("storage/place_category/default.png"); ?>" style="width: 75px; height:75px;"> 
                 @endif
             </td>
+            <td>{!! $blogCategory->name !!}</td>
             <td  width="200px" class="text-center">
                 {!! Form::open(['route' => ['admin.blogCategories.destroy', $blogCategory->id], 'method' => 'delete']) !!}
                 <a href="{!! route('admin.blogCategories.edit', [$blogCategory->id]) !!}"><i class="fa fa-edit fa-lg text-info"></i></a>

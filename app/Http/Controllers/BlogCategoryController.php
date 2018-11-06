@@ -11,6 +11,8 @@ use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
+use App\Models\BlogCategory;
+
 class BlogCategoryController extends Controller
 {
     /** @var  BlogCategoryRepository */
@@ -56,11 +58,30 @@ class BlogCategoryController extends Controller
     {
         $input = $request->all();
 
-        $blogCategory = $this->blogCategoryRepository->create($input);
+        $blogCategory = new BlogCategory;
+        $blogCategory->name = $input['name'];
+        if($request->hasFile('image'))
+        {
+            $path = $request->file('image')->store('/public/place_category');
+            $path = explode("/", $path);
+            $count = count($path)-1;
+            $blogCategory->image = $path[$count];
+        }
+        else
+        {
+            $blogCategory->image = null;
+        }
 
-        $request->session()->flash('msg.success','Blog Category saved successfully.');
-
-        return redirect(route('admin.blogCategories.index'));
+        if($blogCategory->save())
+        {
+            $request->session()->flash('msg.success', 'Blog Category saved successfully.');
+            return redirect(route('admin.blogCategories.index'));
+        }
+        else
+        {
+            $request->session()->flash('msg.error', "Blog Category doesn't created");
+            return redirect(route('admin.blogCategories.index'));
+        }
     }
 
     /**
@@ -94,9 +115,9 @@ class BlogCategoryController extends Controller
     {
         $blogCategory = $this->blogCategoryRepository->findWithoutFail($id);
 
-        if (empty($blogCategory)) {
+        if (empty($blogCategory)) 
+        {
             Flash::error('Blog Category not found');
-
             return redirect(route('blogCategories.index'));
         }
 
@@ -113,8 +134,9 @@ class BlogCategoryController extends Controller
      */
     public function update($id, UpdateBlogCategoryRequest $request)
     {
-        $blogCategory = $this->blogCategoryRepository->findWithoutFail($id);
+        $input = $request->all();
 
+        $blogCategory = BlogCategory::find($id);
 
         if (empty($blogCategory)) 
         {
@@ -122,11 +144,37 @@ class BlogCategoryController extends Controller
             return redirect(route('admin.blogCategories.index'));
         }
 
-        $blogCategory = $this->blogCategoryRepository->update($request->all(), $id);
+        $blogCategory->name = $input['name'];
+        if($request->hasFile('image'))
+        {
 
+            $file_path =  $_SERVER['SCRIPT_FILENAME'];
+            $file = str_replace("/index.php", "", $file_path)."/storage/place_category/".$blogCategory->image;
+            if(is_file($file))
+            {
+                unlink($file);
+            }
 
-        $request->session()->flash('msg.success','Blog Category updated successfully.');
-        return redirect(route('admin.blogCategories.index'));
+            $path = $request->file('image')->store('/public/place_category');
+            $path = explode("/", $path);
+            $count = count($path)-1;
+            $blogCategory->image = $path[$count];
+        }
+        else
+        {
+            $blogCategory->image = null;
+        }
+
+        if($blogCategory->save())
+        {
+            $request->session()->flash('msg.success', 'Blog Category updated successfully.');
+            return redirect(route('admin.blogCategories.index'));
+        }
+        else
+        {
+            $request->session()->flash('msg.error', "Blog Category doesn't updated");
+            return redirect(route('admin.blogCategories.index'));
+        }
     }
 
     /**

@@ -28,9 +28,7 @@
                     </div>
                     <div class="panel-body">
                         <form action="{{ route('admin.famousPlaces.store') }}" method="POST" id="famous_places">
-
                             @include('famous_places.fields')
-
                         </form>
                     </div>
                 </div>

@@ -31,7 +31,9 @@ class FamousPlaces extends Model
     public $fillable = [
         'title',
         'description',
-        'image'
+        'image',
+        'tags',
+        'famous_place_cat_id',
     ];
 
     /**
@@ -43,7 +45,9 @@ class FamousPlaces extends Model
         'id' => 'integer',
         'title' => 'string',
         'description' => 'string',
-        'image' => 'string'
+        'tags' => 'string',
+        'image' => 'string',
+        'famous_place_cat_id' => 'integer'
     ];
 
     /**
@@ -54,6 +58,14 @@ class FamousPlaces extends Model
     public static $rules = [
         
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    **/
+    public function placeCategory()
+    {
+        return $this->belongsTo(\App\Models\BlogCategory::class);
+    }
 
     
 }

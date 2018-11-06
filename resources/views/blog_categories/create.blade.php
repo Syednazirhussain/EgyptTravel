@@ -6,7 +6,7 @@
             <h1>
                 <span class="text-muted font-weight-light">
                     <a href="{{ route('admin.blogCategories.index') }}">
-                        <i class="fa fa-money"></i>&nbsp;Blog Category
+                        <i class="fa fa-money"></i>&nbsp;Place Category
                     </a> /
                 </span>Add
             </h1>
@@ -26,10 +26,10 @@
                 @endif
                 <div class="panel">
                     <div class="panel-heading">
-                        <div class="panel-title">Add Blog Category</div>
+                        <div class="panel-title">Add Place Category</div>
                     </div>
                     <div class="panel-body">
-                        <form action="{{ route('admin.blogCategories.store') }}" method="POST" id="blogcategory">
+                        <form action="{{ route('admin.blogCategories.store') }}" method="POST" id="blogcategory" enctype="multipart/form-data">
                             @include('blog_categories.fields') 
                         </form>
                     </div>

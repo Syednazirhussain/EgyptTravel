@@ -12,6 +12,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 use App\Models\FamousPlaces;
+use App\Models\BlogCategory;
 
 class FamousPlacesController extends Controller
 {
@@ -33,6 +34,7 @@ class FamousPlacesController extends Controller
     {
         $this->famousPlacesRepository->pushCriteria(new RequestCriteria($request));
         $famousPlaces = $this->famousPlacesRepository->all();
+
         return view('famous_places.index')->with('famousPlaces', $famousPlaces);
     }
 
@@ -43,7 +45,13 @@ class FamousPlacesController extends Controller
      */
     public function create()
     {
-        return view('famous_places.create');
+        $blogCategory = BlogCategory::all();
+
+        $data = [
+            'blogCategorys'  => $blogCategory
+        ];
+
+        return view('famous_places.create',$data);
     }
 
     /**
@@ -71,6 +79,8 @@ class FamousPlacesController extends Controller
         }
         $famousPlaces->title = $input['title'];
         $famousPlaces->description = $input['description'];
+        $famousPlaces->tags = $input['tags'];
+        $famousPlaces->famous_place_cat_id = $input['famous_place_cat_id'];
 
         if($famousPlaces->save())
         {
@@ -132,11 +142,16 @@ class FamousPlacesController extends Controller
 
         $famousPlace = FamousPlaces::find($id);
 
+        $blogCategory = BlogCategory::all();
+
         if(count($famousPlace) > 0)
         {
+
             $data = [
-                'famousPlace'   => $famousPlace
+                'famousPlace'   => $famousPlace,
+                'blogCategorys'  => $blogCategory
             ];
+
             return view('famous_places.edit',$data);
         }
         else
@@ -157,11 +172,16 @@ class FamousPlacesController extends Controller
     public function update($id, UpdateFamousPlacesRequest $request)
     {
         $input = $request->all();
+
         $famousPlace = FamousPlaces::find($id);
+
         if(count($famousPlace) > 0)
         {
             $famousPlace->title = $input['title'];
             $famousPlace->description = $input['description'];
+            $famousPlace->tags = $input['tags'];
+            $famousPlace->famous_place_cat_id = $input['famous_place_cat_id'];
+
             if(isset($input['image']))
             {
                 if($request->hasFile('image'))
@@ -176,6 +196,7 @@ class FamousPlacesController extends Controller
                     $famousPlace->image = $input['image'];
                 }                
             }
+
             if($famousPlace->save())
             {
                 $request->session()->flash('msg.success', 'Famous place has been updated successfully');
@@ -203,7 +224,7 @@ class FamousPlacesController extends Controller
             $data = [
                 'success'=> 0,
                 'msg'=>"Famous place can not found",
-                'FamousPlace'=> $user
+                'FamousPlace'=> $famousPlace
             ];
             return response()->json($data);
         }

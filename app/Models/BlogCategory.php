@@ -57,6 +57,6 @@ class BlogCategory extends Model
      **/
     public function famousPlaces()
     {
-        return $this->hasMany(\App\Models\FamousPlaces::class);
+        return $this->hasMany(\App\Models\FamousPlaces::class,'famous_place_cat_id','id');
     }
 }

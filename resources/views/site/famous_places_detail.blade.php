@@ -15,6 +15,27 @@
         color: #fec107;
     }
 
+    .widget-activity-item {
+        position: relative;
+        padding: 12px 15px 12px 64px;
+    }
+
+    .widget-activity-avatar>img {
+    width: 34px;
+    height: 34px;
+    border-radius: 2px;
+}
+
+    .widget-activity-avatar {
+        position: relative;
+        display: block;
+        float: left;
+        width: 34px;
+        height: 34px;
+        margin-top: 3px;
+        margin-left: -49px;
+    }
+
 </style>
 
 @endsection
@@ -76,14 +97,35 @@
                 <div class="sidber-box popular-post-widget">
                     <div class="cats-title">Categories </div>
                     <div class="popular-post-inner">
-                        <ul>
-                            <li>
-                                <a href="javascript:void(0)">Standard Post with Gallery</a>
-                                Wednesday - Nov 23, 2016
-                            </li>
-                        </ul>
+
+                        @if(isset($place_categorys))
+                            @foreach($place_categorys as $place_category)
+                                <div class="widget-activity-item">
+                                    <div class="widget-activity-avatar">
+                                        <img src="{{ asset('storage/place_category/'.$place_category->image) }}" title="{{ $place_category->name }}"> 
+                                    </div>
+                                    <div class="widget-activity-header">
+                                      <a href="javascript:void(0)">{{ $place_category->name }}</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
+
+                <div class="sidber-box tags-widget">
+                    <div class="cats-title">Tags </div>
+                    <div class="tags-inner">
+                        <?php
+                            $tags = explode(",", $famousPlaceDetail->tags);
+                            foreach ($tags as $tag) 
+                            {
+                        ?>
+                        <a href="javascript:void(0)" class="ui tag"><?php echo $tag; ?></a>                            
+                        <?php } ?>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
