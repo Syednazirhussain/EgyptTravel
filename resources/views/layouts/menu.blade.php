@@ -308,3 +308,11 @@
     <a href="{!! route('webSettings.index') !!}"><i class="fa fa-edit"></i><span>Web Settings</span></a>
 </li>
 
+<li class="{{ Request::is('blogCategories*') ? 'active' : '' }}">
+    <a href="{!! route('blogCategories.index') !!}"><i class="fa fa-edit"></i><span>Blog Categories</span></a>
+</li>
+
+<li class="{{ Request::is('blogPosts*') ? 'active' : '' }}">
+    <a href="{!! route('blogPosts.index') !!}"><i class="fa fa-edit"></i><span>Blog Posts</span></a>
+</li>
+

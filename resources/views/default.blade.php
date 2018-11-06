@@ -50,10 +50,6 @@
                             <li>
                                 <a href="{{ route('admin.users.index') }}"><i class="fa fa-users"></i>&nbsp;Users</a>
                             </li>
-                            <li>
-                                <a href="{{ route('admin.famousPlaces.index') }}">
-                                    <i class="fa fa-map-marker"></i>&nbsp;Famous Places</a>
-                            </li>
                             <li class="dropdown-toggle">
                                 <a href="{{ route('admin.packages.index') }}">
                                     <i class="fa fa-briefcase"></i>&nbsp;Packages</a>
@@ -66,6 +62,23 @@
                                     <li>
                                         <a href="{{ route('admin.categories.index') }}">
                                             <i class="fa fa-star"></i>&nbsp;&nbsp;Category
+                                        </a>
+                                    </li>
+                                 </ul>
+                            </li>
+                            <li class="dropdown-toggle">
+                                <a href="{{ route('admin.famousPlaces.index') }}">
+                                    <i class="fa fa-map-marker"></i>&nbsp;Famous Places
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="{{ route('admin.famousPlaces.index') }}">
+                                            <i class="fa fa-map-marker"></i>&nbsp;Famous Places
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('admin.blogCategories.index') }}">
+                                            <i class="fa fa-star"></i>&nbsp;&nbsp;Places Category
                                         </a>
                                     </li>
                                  </ul>

@@ -55,7 +55,6 @@ class DashboardController extends Controller
     	return view('dashboard.index',$data);
     }
 
-
     public function visitSite()
     {
         $packages = Package::all();
@@ -88,7 +87,7 @@ class DashboardController extends Controller
         return view('site.home',$data);
     }
 
-    public function about()
+    public function page($page_code)
     {
         $packages = Package::all();
         $famousPlaces = FamousPlaces::take(6)->get();
@@ -116,7 +115,160 @@ class DashboardController extends Controller
             'webSetting'        => $webSetting
         ];
 
-        return view('site.about',$data);
+        if($page_code == 'about')
+        {
+            return view('site.about',$data);
+        }
+        elseif ($page_code == 'privacy-policy') 
+        {
+            return view('site.privacy_policy',$data);
+        }
+        elseif ($page_code == 'travel-planner') 
+        {
+            return view('site.thing-to-do',$data);
+        }
+        elseif ($page_code == 'travel-tip') 
+        {
+            return view('site.travel-tips',$data);
+        }
+        elseif ($page_code == 'travel-help') 
+        {
+            return view('site.travel-help',$data);
+        }
+        elseif ($page_code == 'privacy-policy') 
+        {
+            return view('site.privacy_policy',$data);
+        }
+        elseif($page_code == 'term-n-condition')
+        {
+            return view('site.term_condition',$data);
+        }
+        elseif ($page_code == 'faq')
+        {
+            return view('site.faq',$data);
+        }
+        elseif ($page_code == 'contact') 
+        {
+            return view('site.contact',$data);
+        }
+        else
+        {
+            return redirect()->back();
+        }
+    }
+
+    public function contact(Request $request)
+    {
+        $this->validate($request,[
+            'f_name' => 'required|max:45',
+            'l_name' => 'required|max:45',
+            'email' => 'required|email',
+            'phone' => 'required|max:15|min:11',
+            'message' => 'required'
+        ]);
+
+        $input = $request->except(['_token']);
+
+        $payload = [
+            'f_name'    => $input['f_name'],
+            'l_name'    => $input['l_name'],
+            'phone'    => $input['phone'],
+            'email'     => $input['email'],
+            'query'   => $input['message']
+        ];
+
+
+        Mail::send('email.contact' , $payload, function($message) use( $payload ) {
+             $message->to($payload['email'])->subject('Acknowledgement');
+        });
+
+        $request->session()->flash('msg.error','Your message has been sent.');
+
+
+        return redirect()->route('site.page',['contact']);
+
+    }
+
+
+    public function famous_places($famous_place_id)
+    {
+        $famous_place = FamousPlaces::find($famous_place_id);
+
+        $packages = Package::all();
+        $famousPlaces = FamousPlaces::take(6)->get();
+        $accomodations = Accomodation::all();
+        $pages = Page::all();
+        $webSetting = WebSetting::all();
+
+        $accomodationImage = [];
+
+        foreach ($accomodations as $accomodation) 
+        {   
+            $imageArr = explode("|", $accomodation->gallery_images);
+            if(!empty($imageArr))
+            {
+                $accomodationImage[$accomodation->id] = $imageArr[0];
+            }
+        }
+
+        $data = [
+            'packages'          => $packages,
+            'famousPlaces'      => $famousPlaces,
+            'accomodations'     => $accomodations,
+            'accomodationImage' => $accomodationImage,
+            'pages'             => $pages,
+            'webSetting'        => $webSetting
+        ];
+
+        if(!empty($famous_place))
+        {
+            $data['famousPlaceDetail']  = $famous_place;
+        }
+
+        return view('site.famous_places_detail',$data);
+    }
+
+    public function popular_package($package_id)
+    {
+        $package = Package::find($package_id);
+
+        if(empty($package))
+        {
+            return redirect()->back();
+        }
+
+        $packages = Package::all();
+        $famousPlaces = FamousPlaces::take(6)->get();
+        $accomodations = Accomodation::all();
+        $pages = Page::all();
+        $webSetting = WebSetting::all();
+
+        $accomodationImage = [];
+
+        foreach ($accomodations as $accomodation) 
+        {   
+            $imageArr = explode("|", $accomodation->gallery_images);
+            if(!empty($imageArr))
+            {
+                $accomodationImage[$accomodation->id] = $imageArr[0];
+            }
+        }
+
+        $data = [
+            'packages'          => $packages,
+            'famousPlaces'      => $famousPlaces,
+            'accomodations'     => $accomodations,
+            'accomodationImage' => $accomodationImage,
+            'pages'             => $pages,
+            'webSetting'        => $webSetting
+        ];
+
+        if(!empty($package))
+        {
+            $data['packageDetail']  = $package;
+        }
+
+        return view('site.popular_detail',$data);
     }
 
 

@@ -24,12 +24,18 @@ Route::get('admin/login',['as' => 'admin.view.login','uses' => 'LoginController@
 Route::post('admin/login',['as' => 'admin.login','uses' => 'LoginController@login_action']);
 
 Route::get('site/home',['as' => 'public.site','uses' => 'DashboardController@visitSite']);
-Route::get('site/about',['as' => 'site.about','uses' => 'DashboardController@about']);
+Route::get('site/page/{page_code}',['as' => 'site.page','uses' => 'DashboardController@page']);
+Route::post('site/contact-us',['as' => 'site.contact','uses' => 'DashboardController@contact']);
+
+
+
+Route::get('site/famous-places/{famous_places}',['as' => 'site.famous_place.detail','uses' => 'DashboardController@famous_places']);
+Route::get('site/popular-package/{package_id}',['as' => 'site.popular_package.detail','uses' => 'DashboardController@popular_package']);
+
 Route::get('site/accomodation',['as' => 'site.accomodation','uses' => 'DashboardController@accomodation']);
 Route::get('site/nile_curises',['as' => 'site.nile_curises','uses' => 'DashboardController@nile_curises']);
 Route::get('site/tour_packages',['as' => 'site.tour_packages','uses' => 'DashboardController@tour_package']);
 Route::get('site/tour_packages/{package_id}',['as' => 'site.tour_packages.show','uses' => 'DashboardController@package_show']);
-
 Route::post('site/tour_packages/contact',['as' => 'site.tour_packages.contact','uses' => 'DashboardController@package_contact']);
 
 
@@ -105,6 +111,27 @@ Route::group(['middleware' => ['admin.auth']], function () {
 	Route::delete('admin/categories/{categories}', ['as'=> 'admin.categories.destroy', 'uses' => 'CategoryController@destroy']);
 	Route::get('admin/categories/{categories}', ['as'=> 'admin.categories.show', 'uses' => 'CategoryController@show']);
 	Route::get('admin/categories/{categories}/edit', ['as'=> 'admin.categories.edit', 'uses' => 'CategoryController@edit']);
+
+
+	Route::get('admin/blogCategories', ['as'=> 'admin.blogCategories.index', 'uses' => 'BlogCategoryController@index']);
+	Route::post('admin/blogCategories', ['as'=> 'admin.blogCategories.store', 'uses' => 'BlogCategoryController@store']);
+	Route::get('admin/blogCategories/create', ['as'=> 'admin.blogCategories.create', 'uses' => 'BlogCategoryController@create']);
+	Route::put('admin/blogCategories/{blogCategories}', ['as'=> 'admin.blogCategories.update', 'uses' => 'BlogCategoryController@update']);
+	Route::patch('admin/blogCategories/{blogCategories}', ['as'=> 'admin.blogCategories.update', 'uses' => 'BlogCategoryController@update']);
+	Route::delete('admin/blogCategories/{blogCategories}', ['as'=> 'admin.blogCategories.destroy', 'uses' => 'BlogCategoryController@destroy']);
+	Route::get('admin/blogCategories/{blogCategories}', ['as'=> 'admin.blogCategories.show', 'uses' => 'BlogCategoryController@show']);
+	Route::get('admin/blogCategories/{blogCategories}/edit', ['as'=> 'admin.blogCategories.edit', 'uses' => 'BlogCategoryController@edit']);
+
+	// Route::get('admin/blogPosts', ['as'=> 'admin.blogPosts.index', 'uses' => 'BlogPostController@index']);
+	// Route::post('admin/blogPosts', ['as'=> 'admin.blogPosts.store', 'uses' => 'BlogPostController@store']);
+	// Route::get('admin/blogPosts/create', ['as'=> 'admin.blogPosts.create', 'uses' => 'BlogPostController@create']);
+	// Route::put('admin/blogPosts/{blogPosts}', ['as'=> 'admin.blogPosts.update', 'uses' => 'BlogPostController@update']);
+	// Route::patch('admin/blogPosts/{blogPosts}', ['as'=> 'admin.blogPosts.update', 'uses' => 'BlogPostController@update']);
+	// Route::delete('admin/blogPosts/{blogPosts}', ['as'=> 'admin.blogPosts.destroy', 'uses' => 'BlogPostController@destroy']);
+	// Route::get('admin/blogPosts/{blogPosts}', ['as'=> 'admin.blogPosts.show', 'uses' => 'BlogPostController@show']);
+	// Route::get('admin/blogPosts/{blogPosts}/edit', ['as'=> 'admin.blogPosts.edit', 'uses' => 'BlogPostController@edit']);
+
+
 
 	Route::get('admin/pages/{pages}/edit', ['as'=> 'admin.pages.edit', 'uses' => 'PageController@edit']);
 	Route::put('admin/pages/{pages}', ['as'=> 'admin.pages.update', 'uses' => 'PageController@update']);

@@ -231,7 +231,7 @@
                             <ul class="categoty">
                                 @foreach($packages as $package)
                                     <li>
-                                        <a href="javascript:void(0)">
+                                        <a href="{{ route('site.popular_package.detail',[$package->id]) }}">
                                             {{ $package->title }}
                                         </a>
                                     </li>
@@ -245,7 +245,7 @@
                             <ul class="categoty">
                                 @foreach($accomodations as $accomodation)
                                     <li>
-                                        <a href="javascript:void(0)">
+                                        <a href="{{ $accomodation->url_link }}">
                                             {{ $accomodation->name }}
                                         </a>
                                     </li>
@@ -259,7 +259,7 @@
                             <ul class="categoty">
                             @foreach($famousPlaces as $famousPlace)
                                 <li>
-                                    <a href="javascript:void(0)">
+                                    <a href="{{ route('site.famous_place.detail',[$famousPlace->id]) }}">
                                         {{ $famousPlace->title }} 
                                     </a>
                                 </li>
@@ -275,7 +275,7 @@
                     <ul class="gallery-list">
                         @foreach($famousPlaces as $famousPlace)
                         <li> 
-                            <a href="javascript:void(0)">
+                            <a href="{{ route('site.famous_place.detail',[$famousPlace->id]) }}">
                                 @if($famousPlace->image != null)
                                     <img style="height: 85px;max-width: 85px" src="<?php echo asset("storage/famous_places/".$famousPlace->image); ?>" title="{{ $famousPlace->title }}"> 
                                 @else
@@ -294,16 +294,46 @@
             <div class="row">
                 <div class="col-sm-4">
                     <p> 
-                        Copyrights © 2018-19 <a href="javascript:void(0)">Egypt Travel</a>&nbsp;-&nbsp;All rights reserved 
+                        Copyrights © 2018-19 <a href="{{ route('public.site') }}">Egypt Travel</a>&nbsp;-&nbsp;All rights reserved 
                     </p>
                 </div>
                 <div class="col-sm-8">
                     <div class="footer-menu">
                         <ul>
                             @foreach($pages as $page)
-                            <li>
-                                <a href="javascript:void(0)">{{ $page->name }}</a>
-                            </li>
+                                @if($page->code == 'about')
+                                    <li>
+                                        <a href="{{ route('site.page',['about']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'travel-help')
+                                    <li>
+                                        <a href="{{ route('site.page',['travel-help']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'travel-planner')
+                                    <li>
+                                        <a href="{{ route('site.page',['travel-planner']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'travel-tip')
+                                    <li>
+                                        <a href="{{ route('site.page',['travel-tip']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'privacy-policy')
+                                    <li>
+                                        <a href="{{ route('site.page',['privacy-policy']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'term-n-condition')
+                                    <li>
+                                        <a href="{{ route('site.page',['term-n-condition']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'faq')
+                                    <li>
+                                        <a href="{{ route('site.page',['faq']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'contact')
+                                    <li>
+                                        <a href="{{ route('site.page',['contact']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @endif
                             @endforeach
                         </ul>
                     </div>

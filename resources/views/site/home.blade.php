@@ -235,7 +235,7 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="title">
-                    <h2>Popular Packages</h2>
+                    <h2>Popular Egypt Tour Packages</h2>
                 </div>
             </div>
         </div>
@@ -272,12 +272,12 @@
                                 <i class="flaticon-weightlifting" data-toggle="tooltip" data-placement="top" title="" data-original-title="Fitness center"></i>
                                 <i class="flaticon-lemonade" data-toggle="tooltip" data-placement="top" title="" data-original-title="Restaurant"></i>
                             </div>
-                        </div>   
+                        </div>
                         <div class="hotel-right"> 
                             <div class="hotel-person">from 
                                 <span class="color-blue">${{ $package->prices->price }}</span> person
                             </div>
-                            <a class="thm-btn" href="javascript:void(0)">Details</a>
+                            <a class="thm-btn" href="{{ route('site.popular_package.detail',[$package->id]) }}">Details</a>
                         </div>                         
                     </div>
                 </div>                    
@@ -417,10 +417,15 @@
 			                    <img style="height: 250px" class="img-responsive" src="<?php echo asset("storage/famous_places/default.png"); ?>"> 
 			                @endif
 	                    </a>
-	                    <div class="mask">
+	                    <a class="mask" href="{{ route('site.famous_place.detail',[$famousPlace->id]) }}">
 	                        <h2>Egypt</h2>
-	                        <p><?php echo strip_tags($famousPlace->description); ?></p>
-	                    </div>
+                            <p>
+                                <?php 
+                                    $desc =  strip_tags($famousPlace->description);
+                                    echo substr($desc,0,40)."..."; 
+                                ?>
+                            </p>
+	                    </a>
 	                    <div class="dest-name">
 	                        <h5>{{ $famousPlace->title }} </h5>
 	                        <h4>Egypt</h4>
@@ -533,12 +538,12 @@
                         <div class="footer-box">
                             <h4 class="footer-title">Packages</h4>
                             <ul class="categoty">
-                            	@foreach($packages as $package)
-	                                <li>
-	                                	<a href="javascript:void(0)">
-	                                		{{ $package->title }}
-	                                	</a>
-	                                </li>
+                                @foreach($packages as $package)
+                                    <li>
+                                        <a href="{{ route('site.popular_package.detail',[$package->id]) }}">
+                                            {{ $package->title }}
+                                        </a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -547,25 +552,25 @@
                         <div class="footer-box">
                             <h4 class="footer-title">Hotels</h4>
                             <ul class="categoty">
-                            	@foreach($accomodations as $accomodation)
-                                	<li>
-                                		<a href="javascript:void(0)">
-                                			{{ $accomodation->name }}
-                                		</a>
-                                	</li>
+                                @foreach($accomodations as $accomodation)
+                                    <li>
+                                        <a href="{{ $accomodation->url_link }}">
+                                            {{ $accomodation->name }}
+                                        </a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4">
                         <div class="footer-box">
-                        	<h4 class="footer-title">Famous Places</h4>
-                        	<ul class="categoty">
-                        	@foreach($famousPlaces as $famousPlace)
+                            <h4 class="footer-title">Famous Places</h4>
+                            <ul class="categoty">
+                            @foreach($famousPlaces as $famousPlace)
                                 <li>
-                                	<a href="javascript:void(0)">
-                                		{{ $famousPlace->title }} 
-                                	</a>
+                                    <a href="{{ route('site.famous_place.detail',[$famousPlace->id]) }}">
+                                        {{ $famousPlace->title }} 
+                                    </a>
                                 </li>
                             @endforeach
                             </ul>
@@ -577,15 +582,15 @@
                 <div class="footer-box">
                     <h4 class="footer-title">Gallery</h4>
                     <ul class="gallery-list">
-                    	@foreach($famousPlaces as $famousPlace)
+                        @foreach($famousPlaces as $famousPlace)
                         <li> 
-                        	<a href="javascript:void(0)">
-				                @if($famousPlace->image != null)
-				                    <img style="height: 85px;max-width: 85px" src="<?php echo asset("storage/famous_places/".$famousPlace->image); ?>" title="{{ $famousPlace->title }}"> 
-				                @else
-				                    <img style="height: 85px;max-width: 85px" src="<?php echo asset("storage/famous_places/default.png"); ?>"> 
-				                @endif
-                        	</a>
+                            <a href="{{ route('site.famous_place.detail',[$famousPlace->id]) }}">
+                                @if($famousPlace->image != null)
+                                    <img style="height: 85px;max-width: 85px" src="<?php echo asset("storage/famous_places/".$famousPlace->image); ?>" title="{{ $famousPlace->title }}"> 
+                                @else
+                                    <img style="height: 85px;max-width: 85px" src="<?php echo asset("storage/famous_places/default.png"); ?>"> 
+                                @endif
+                            </a>
                         </li>
                         @endforeach
                     </ul>
@@ -598,17 +603,46 @@
             <div class="row">
                 <div class="col-sm-4">
                     <p> 
-<!--                         webSetting[0]->footer_text -->
-                        Copyrights © 2018-19 <a href="javascript:void(0)">Egypt Travel</a>&nbsp;-&nbsp;All rights reserved 
+                        Copyrights © 2018-19 <a href="{{ route('public.site') }}">Egypt Travel</a>&nbsp;-&nbsp;All rights reserved 
                     </p>
                 </div>
                 <div class="col-sm-8">
                     <div class="footer-menu">
                         <ul>
-                        	@foreach($pages as $page)
-                            <li>
-                            	<a href="javascript:void(0)">{{ $page->name }}</a>
-                            </li>
+                            @foreach($pages as $page)
+                                @if($page->code == 'about')
+                                    <li>
+                                        <a href="{{ route('site.page',['about']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'travel-help')
+                                    <li>
+                                        <a href="{{ route('site.page',['travel-help']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'travel-planner')
+                                    <li>
+                                        <a href="{{ route('site.page',['travel-planner']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'travel-tip')
+                                    <li>
+                                        <a href="{{ route('site.page',['travel-tip']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'privacy-policy')
+                                    <li>
+                                        <a href="{{ route('site.page',['privacy-policy']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'term-n-condition')
+                                    <li>
+                                        <a href="{{ route('site.page',['term-n-condition']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'faq')
+                                    <li>
+                                        <a href="{{ route('site.page',['faq']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @elseif($page->code == 'contact')
+                                    <li>
+                                        <a href="{{ route('site.page',['contact']) }}">{{ $page->name }}</a>
+                                    </li>
+                                @endif
                             @endforeach
                         </ul>
                     </div>

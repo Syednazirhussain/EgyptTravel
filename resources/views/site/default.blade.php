@@ -37,19 +37,18 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="{{ route('public.site') }}">Home</a></li>
-                            <li><a href="{{ route('site.about') }}">About Egypt</a></li>
+                            <li><a href="{{ route('site.page',['about']) }}">About Egypt</a></li>
                             <li><a href="{{ route('site.accomodation') }}">Accomodation</a></li>
                             <li><a href="{{ route('site.nile_curises') }}">Nile Cruises</a></li>
                             <li><a href="{{ route('site.tour_packages') }}">Tour Packages</a></li>
-                            <li><a href="javascript:void(0)">Contact Us</a></li>
-<!--                             <li class="dropdown">
+                            <li class="dropdown">
                                 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">FAQ</span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="javascript:void(0)">Thing to do</a></li>
-                                    <li><a href="javascript:void(0)">How to travel</a></li>
-                                    <li><a href="javascript:void(0)">Travel Help</a></li>
+                                    <li><a href="{{ route('site.page',['travel-tip']) }}">Thing to do</a></li>
+                                    <li><a href="{{ route('site.page',['travel-planner']) }}">How to travel</a></li>
+                                    <li><a href="{{ route('site.page',['travel-help']) }}">Travel Help</a></li>
                                 </ul>
-                            </li> -->
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -151,9 +150,9 @@
 
 
 
-            // $('ul#dropdown > li').hover(function () {
-            //     $(this).toggleClass('active').siblings().removeClass('active');
-            // });
+            $('ul#dropdown > li').hover(function () {
+                $(this).toggleClass('active').siblings().removeClass('active');
+            });
 
 
         </script>
