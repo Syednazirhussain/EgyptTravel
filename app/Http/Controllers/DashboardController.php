@@ -170,6 +170,8 @@ class DashboardController extends Controller
 
         $input = $request->except(['_token']);
 
+        $admin_email = User::where('user_role_code','admin')->first()->email;
+
         $payload = [
             'f_name'    => $input['f_name'],
             'l_name'    => $input['l_name'],
@@ -178,8 +180,15 @@ class DashboardController extends Controller
             'query'   => $input['message']
         ];
 
-
         Mail::send('email.contact' , $payload, function($message) use( $payload ) {
+             $message->to($payload['email'])->subject('Acknowledgement');
+        });
+
+        unset($payload['email']);
+
+        $payload['email'] = $admin_email;
+
+        Mail::send('email.contact_admin' , $payload, function($message) use( $payload ) {
              $message->to($payload['email'])->subject('Acknowledgement');
         });
 
@@ -187,16 +196,14 @@ class DashboardController extends Controller
 
 
         return redirect()->route('site.page',['contact']);
-
     }
-
 
     public function famous_places($famous_place_id)
     {
 
         $famous_place = FamousPlaces::find($famous_place_id);
         $place_categorys = BlogCategory::with('famousPlaces:id,title,image')->get();
-        
+
         $packages = Package::all();
         $famousPlaces = FamousPlaces::take(6)->get();
         $accomodations = Accomodation::all();
