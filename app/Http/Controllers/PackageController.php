@@ -62,6 +62,47 @@ class PackageController extends Controller
         return view('packages.create',$data);
     }
 
+
+    public function popular($package_id)
+    {
+        $recommended_package = Package::where('popular',1)->get()->count();
+        if($recommended_package < 4)
+        {
+            if(Package::find($package_id)->update(['popular' => 1]))
+            {
+                return response()->json([
+                    'status'    => 'success',
+                    'message'   => 'Package was changed to popular'
+                ]);
+            }
+        }
+        else
+        {
+            return response()->json([
+                'status'   => 'fail',
+                'message'   => 'There are already 4 popular packages please uncheck some one else to mark it as popular'
+            ]);
+        }
+    }
+
+    public function release_popular($package_id)
+    {
+        if(Package::find($package_id)->update(['popular' => 0]))
+        {
+            return response()->json([
+                'status'    => 'success',
+                'message'   => 'Package was changed to un-popular'
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status'    => 'fail',
+                'message'   => 'There is some problem to release popular'
+            ]);
+        }
+    }
+
     /**
      * Store a newly created Package in storage.
      *

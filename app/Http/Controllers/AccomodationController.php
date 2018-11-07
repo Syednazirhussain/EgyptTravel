@@ -47,6 +47,49 @@ class AccomodationController extends Controller
         return view('accomodations.create');
     }
 
+
+    public function recommended($accomodation_id)
+    {
+        $recommended_accomodation = Accomodation::where('recommended',1)->get()->count();
+
+        if($recommended_accomodation < 4)
+        {
+            if(Accomodation::find($accomodation_id)->update(['recommended' => 1]))
+            {
+                return response()->json([
+                    'status'    => 'success',
+                    'message'   => 'Accomodation was changed to recommended'
+                ]);
+            }
+        }
+        else
+        {
+            return response()->json([
+                'status'   => 'fail',
+                'message'   => 'There are already 4 recommended hotels please uncheck some one else to mark it as recommended'
+            ]);
+        }
+
+    }
+
+    public function release_recommended($accomodation_id)
+    {
+        if(Accomodation::find($accomodation_id)->update(['recommended' => 0]))
+        {
+            return response()->json([
+                'status'    => 'success',
+                'message'   => 'Accomodation was changed to unrecommended'
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status'    => 'fail',
+                'message'   => 'There is some problem to release recommendation'
+            ]);
+        }
+    }
+
     /**
      * Store a newly created Accomodation in storage.
      *

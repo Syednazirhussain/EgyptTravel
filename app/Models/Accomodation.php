@@ -36,7 +36,8 @@ class Accomodation extends Model
         'address',
         'description',
         'gallery_images',
-        'url_link'
+        'url_link',
+        'recommended'
     ];
 
     /**
@@ -50,7 +51,8 @@ class Accomodation extends Model
         'address' => 'string',
         'description' => 'string',
         'gallery_images' => 'string',
-        'url_link' => 'string'
+        'url_link' => 'string',
+        'recommended'  => 'boolean'
     ];
 
     /**

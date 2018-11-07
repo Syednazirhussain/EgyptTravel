@@ -1,5 +1,79 @@
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
+@section('css')
+<style type="text/css">
+  
+  /* The container */
+  .custom_checkbox {
+          display: block;
+    position: relative;
+    padding-left: 27px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Hide the browser's default checkbox */
+  .custom_checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+  }
+
+  /* Create a custom checkbox */
+  .checkmark {
+      position: absolute;
+      top: 1px;
+      left: 0;
+      height: 18px;
+      width: 18px;
+      background-color: #eee;
+  }
+
+  /* On mouse-over, add a grey background color */
+  .custom_checkbox:hover input ~ .checkmark {
+      background-color: #ccc;
+  }
+
+  /* When the checkbox is checked, add a blue background */
+  .custom_checkbox input:checked ~ .checkmark {
+      background-color: #49c000;
+  }
+
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+  }
+
+  /* Show the checkmark when checked */
+  .custom_checkbox input:checked ~ .checkmark:after {
+      display: block;
+  }
+
+  /* Style the checkmark/indicator */
+  .custom_checkbox .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+</style>
+@endsection
+
 @if(isset($accomodation))
     <input name="_method" type="hidden" value="PATCH">
 @endif
@@ -45,6 +119,25 @@
           </div>
     </div>
 
+    <div class="col-md-12">
+      <div class="form-group">
+        <label class="custom_checkbox">Mark as recommended
+          @if(isset($accomodation))
+
+            @if($accomodation->recommended == 1)
+              <input type="checkbox" id="recommended" data-id="{{ $accomodation->id }}" checked="checked">
+            @else
+              <input type="checkbox" id="recommended" data-id="{{ $accomodation->id }}">
+            @endif
+
+          @else
+            <input type="checkbox" id="recommended" data-id="0">
+          @endif
+          <span class="checkmark"></span>
+        </label>
+      </div>
+    </div>
+
 
     <div class="col-md-12">
       <button type="submit" id="send" class="btn btn-primary">@if(isset($accomodation)) <i class="fa fa-refresh"></i>  Update @else <i class="fa fa-plus"></i>  Add Package @endif</button>
@@ -64,6 +157,36 @@
 
       $('#description').val(  $('#editDesc').val() );
       $('#address').val(  $('#editAddr').val() );
+
+
+      $("#recommended").change(function() {
+          var accomodation_id = $(this).data('id');
+          if(this.checked) 
+          {
+              $.ajax({
+                  url: "{{ route('admin.accomodations.recommended',['']) }}/"+accomodation_id,
+                  type: "GET"
+              }).done(function(response){
+                if(response.status == 'fail')
+                {
+                  $(this).attr('checked', false);
+                  alert(response.message);
+                }
+              });
+          }
+          else
+          {
+            $.ajax({
+              url: "{{ route('admin.accomodations.release.recommended',['']) }}/"+accomodation_id,
+              type: "GET"
+            }).done(function(response){
+                if(response.status == 'success')
+                {
+                  alert(response.message);
+                }            
+            });
+          }
+      });
 
       $("#accomodations").submit(function(e) {
             e.preventDefault();

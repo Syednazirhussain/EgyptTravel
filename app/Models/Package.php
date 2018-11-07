@@ -48,6 +48,7 @@ class Package extends Model
         'night',
         'accomodation_id',
         'traveling_date',
+        'popular',
         'important_notes'
     ];
 
@@ -68,6 +69,7 @@ class Package extends Model
         'day' => 'integer',
         'night' => 'integer',
         'accomodation_id' => 'integer',
+        'popular' => 'boolean',
         'important_notes' => 'string'
     ];
 

@@ -18,6 +18,8 @@ use DB;
 
 class DashboardController extends Controller
 {
+
+
     public function dashboard()
     {
     	$users = User::take(5)->get();
@@ -58,9 +60,9 @@ class DashboardController extends Controller
 
     public function visitSite()
     {
-        $packages = Package::all();
+        $packages = Package::where('popular',1)->get();
         $famousPlaces = FamousPlaces::take(6)->get();
-        $accomodations = Accomodation::all();
+        $accomodations = Accomodation::where('recommended',1)->get();
         $pages = Page::all();
         $webSetting = WebSetting::all();
 
@@ -81,7 +83,8 @@ class DashboardController extends Controller
             'accomodations'     => $accomodations,
             'accomodationImage' => $accomodationImage,
             'pages'             => $pages,
-            'webSetting'        => $webSetting
+            'webSetting'        => $webSetting,
+            'title'             => 'Home'
         ];
 
 
@@ -118,38 +121,47 @@ class DashboardController extends Controller
 
         if($page_code == 'about')
         {
+            $data['title']  = 'About';
             return view('site.about',$data);
         }
         elseif ($page_code == 'privacy-policy') 
         {
+            $data['title']  = 'Privacy Policy';
             return view('site.privacy_policy',$data);
         }
         elseif ($page_code == 'travel-planner') 
         {
+            $data['title']  = 'Travel Planner';
             return view('site.thing-to-do',$data);
         }
         elseif ($page_code == 'travel-tip') 
         {
+            $data['title']  = 'Travel Tips';
             return view('site.travel-tips',$data);
         }
         elseif ($page_code == 'travel-help') 
         {
+            $data['title']  = 'Travel Help';
             return view('site.travel-help',$data);
         }
         elseif ($page_code == 'privacy-policy') 
         {
+            $data['title']  = 'Privacy Policy';
             return view('site.privacy_policy',$data);
         }
         elseif($page_code == 'term-n-condition')
         {
+            $data['title']  = 'Terms & condition';
             return view('site.term_condition',$data);
         }
         elseif ($page_code == 'faq')
         {
+            $data['title']  = 'FAQ';
             return view('site.faq',$data);
         }
         elseif ($page_code == 'contact') 
         {
+            $data['title']  = 'Contact';
             return view('site.contact',$data);
         }
         else

@@ -5,6 +5,74 @@
         width: 150px;
         height: 150px;
     }
+    /* The container */
+    .custom_checkbox {
+            display: block;
+      position: relative;
+      padding-left: 27px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* Hide the browser's default checkbox */
+    .custom_checkbox input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 1px;
+        left: 0;
+        height: 18px;
+        width: 18px;
+        background-color: #eee;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .custom_checkbox:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .custom_checkbox input:checked ~ .checkmark {
+        background-color: #49c000;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .custom_checkbox input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .custom_checkbox .checkmark:after {
+      left: 6px;
+      top: 2px;
+      width: 6px;
+      height: 12px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
 </style>
 
 @endsection
@@ -193,6 +261,25 @@
     </div>
 
     <div class="col-md-12">
+      <div class="form-group">
+        <label class="custom_checkbox">Mark as popular
+          @if(isset($package))
+
+            @if($package->popular == 1)
+              <input type="checkbox" id="popular" data-id="{{ $package->id }}" checked="checked">
+            @else
+              <input type="checkbox" id="popular" data-id="{{ $package->id }}">
+            @endif
+
+          @else
+            <input type="checkbox" id="popular" data-id="0">
+          @endif
+          <span class="checkmark"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="col-md-12">
       <button type="submit" id="send" class="btn btn-primary">@if(isset($package)) <i class="fa fa-refresh"></i>  Update @else <i class="fa fa-plus"></i>  Add Package @endif</button>
       <a href="{!! route('admin.packages.index') !!}" class="btn btn-default"><i class="fa fa-times"></i> Cancel</a>
       <span id="loader">
@@ -206,6 +293,32 @@
 @section('js')
 
     <script type="text/javascript">
+
+      $("#popular").change(function() {
+          var packages_id = $(this).data('id');
+          if(this.checked) 
+          {
+              $.ajax({
+                  url: "{{ route('admin.packages.popular',['']) }}/"+packages_id,
+                  type: "GET"
+              }).done(function(response){
+                if(response.status == 'fail')
+                {
+                  $(this).prop('checked', false);
+                }
+                alert(response.message);
+              });
+          }
+          else
+          {
+            $.ajax({
+              url: "{{ route('admin.packages.release.popular',['']) }}/"+packages_id,
+              type: "GET"
+            }).done(function(response){
+                alert(response.message);  
+            });
+          }
+      });
 
       //https://github.com/jasny/bootstrap/issues/334#issuecomment-383005685
       $('.fileinput').on("change.bs.fileinput", function (e) {

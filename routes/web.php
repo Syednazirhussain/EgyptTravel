@@ -23,21 +23,19 @@ Route::get('/admin', function () {
 Route::get('admin/login',['as' => 'admin.view.login','uses' => 'LoginController@viewLogin']);
 Route::post('admin/login',['as' => 'admin.login','uses' => 'LoginController@login_action']);
 
-Route::get('site/home',['as' => 'public.site','uses' => 'DashboardController@visitSite']);
-Route::get('site/page/{page_code}',['as' => 'site.page','uses' => 'DashboardController@page']);
-Route::post('site/contact-us',['as' => 'site.contact','uses' => 'DashboardController@contact']);
+Route::get('home',['as' => 'public.site','uses' => 'DashboardController@visitSite']);
+Route::get('/{page_code}',['as' => 'site.page','uses' => 'DashboardController@page']);
+Route::post('contact-us',['as' => 'site.contact','uses' => 'DashboardController@contact']);
 
 
+Route::get('accomodation/page',['as' => 'site.accomodation','uses' => 'DashboardController@accomodation']);
+Route::get('nile_curises/page',['as' => 'site.nile_curises','uses' => 'DashboardController@nile_curises']);
+Route::get('tour_packages/page',['as' => 'site.tour_packages','uses' => 'DashboardController@tour_package']);
+Route::post('tour_packages/contact/page',['as' => 'site.tour_packages.contact','uses' => 'DashboardController@package_contact']);
 
-Route::get('site/famous-places/{famous_places}',['as' => 'site.famous_place.detail','uses' => 'DashboardController@famous_places']);
-Route::get('site/popular-package/{package_id}',['as' => 'site.popular_package.detail','uses' => 'DashboardController@popular_package']);
-
-Route::get('site/accomodation',['as' => 'site.accomodation','uses' => 'DashboardController@accomodation']);
-Route::get('site/nile_curises',['as' => 'site.nile_curises','uses' => 'DashboardController@nile_curises']);
-Route::get('site/tour_packages',['as' => 'site.tour_packages','uses' => 'DashboardController@tour_package']);
-Route::get('site/tour_packages/{package_id}',['as' => 'site.tour_packages.show','uses' => 'DashboardController@package_show']);
-Route::post('site/tour_packages/contact',['as' => 'site.tour_packages.contact','uses' => 'DashboardController@package_contact']);
-
+Route::get('famous-places/{famousPlaces_id}',['as' => 'site.famous_place.detail','uses' => 'DashboardController@famous_places']);
+Route::get('popular-package/{package_id}',['as' => 'site.popular_package.detail','uses' => 'DashboardController@popular_package']);
+Route::get('tour_packages/{package_id}',['as' => 'site.tour_packages.show','uses' => 'DashboardController@package_show']);
 
 Route::group(['middleware' => ['admin.auth']], function () {
 
@@ -64,6 +62,8 @@ Route::group(['middleware' => ['admin.auth']], function () {
 	Route::get('admin/famous_places/{famous_places}', ['as'=> 'admin.famousPlaces.show', 'uses' => 'FamousPlacesController@show']);
 	Route::get('admin/famous_places/{famous_places}/edit', ['as'=> 'admin.famousPlaces.edit', 'uses' => 'FamousPlacesController@edit']);
 
+	Route::get('admin/packages/popular/{package_id}', ['as'=> 'admin.packages.popular', 'uses' => 'PackageController@popular']);
+	Route::get('admin/packages/release_popular/{packages_id}', ['as'=> 'admin.packages.release.popular', 'uses' => 'PackageController@release_popular']);
 
 	Route::get('admin/packages', ['as'=> 'admin.packages.index', 'uses' => 'PackageController@index']);
 	Route::post('admin/packages', ['as'=> 'admin.packages.store', 'uses' => 'PackageController@store']);
@@ -82,6 +82,11 @@ Route::group(['middleware' => ['admin.auth']], function () {
 	Route::delete('admin/prices/{prices}', ['as'=> 'admin.prices.destroy', 'uses' => 'PriceController@destroy']);
 	Route::get('admin/prices/{prices}', ['as'=> 'admin.prices.show', 'uses' => 'PriceController@show']);
 	Route::get('admin/prices/{prices}/edit', ['as'=> 'admin.prices.edit', 'uses' => 'PriceController@edit']);
+
+
+	Route::get('admin/accomodations/recommended/{accomodation_id}', ['as'=> 'admin.accomodations.recommended', 'uses' => 'AccomodationController@recommended']);
+	Route::get('admin/accomodations/release_recommended/{accomodation_id}', ['as'=> 'admin.accomodations.release.recommended', 'uses' => 'AccomodationController@release_recommended']);
+
 
 	Route::get('admin/accomodations', ['as'=> 'admin.accomodations.index', 'uses' => 'AccomodationController@index']);
 	Route::post('admin/accomodations', ['as'=> 'admin.accomodations.store', 'uses' => 'AccomodationController@store']);
