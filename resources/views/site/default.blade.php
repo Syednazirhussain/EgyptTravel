@@ -283,100 +283,86 @@
             var pageName = urlArray[urlArray.length-2];
             console.log(lastUrlString);
 
-
             var navLinks = $('ul.nav li');
             navLinks.each(function(index,element){
 
+                var position = $(element).data('pos');
+
                 if(lastUrlString == 'home')
                 {
-
-                    $('ul.nav > li:nth-child(2)').removeClass('active');
-                    $('ul.nav > li:nth-child(1)').addClass('active');
+                    if($(element).data("pos") == 1)
+                    {
+                        if(!$(element).hasClass("active") )
+                        {
+                            $(element).addClass('active');
+                        }
+                    }
+                    else
+                    {
+                        $(element).removeClass("active");
+                    }
                 }
                 else if(lastUrlString == 'about')
                 {
-                    $('ul.nav > li:nth-child(1)').removeClass('active');
-                    $('ul.nav > li:nth-child(2)').addClass('active');
+                    if($(element).data("pos") == 2)
+                    {
+                        if(!$(element).hasClass("active") )
+                        {
+                            $(element).addClass('active');
+                        }
+                    }
+                    else
+                    {
+                        $(element).removeClass("active");
+                    }
                 }
                 else if(lastUrlString == 'page' &&  pageName == 'accomodation')
                 {
-                    $('ul.nav > li:nth-child(2)').removeClass('active');
-                    $('ul.nav > li:nth-child(3)').addClass('active');
+                    if($(element).data("pos") == 3)
+                    {
+                        if(!$(element).hasClass("active") )
+                        {
+                            $(element).addClass('active');
+                        }
+                    }
+                    else
+                    {
+                        $(element).removeClass("active");
+                    }
                 }
                 else if(lastUrlString == 'page' &&  pageName == 'nile_curises')
                 {
-                    $('ul.nav > li:nth-child(3)').removeClass('active');
-                    $('ul.nav > li:nth-child(4)').addClass('active');
+                    if($(element).data("pos") == 4)
+                    {
+                        if(!$(element).hasClass("active") )
+                        {
+                            $(element).addClass('active');
+                        }
+                    }
+                    else
+                    {
+                        $(element).removeClass("active");
+                    }
                 }
                 else if(lastUrlString == 'page' &&  pageName == 'tour_packages')
                 {
-                    $('ul.nav > li:nth-child(4)').removeClass('active');
-                    $('ul.nav > li:nth-child(5)').addClass('active');
+                    if($(element).data("pos") == 5)
+                    {
+                        if(!$(element).hasClass("active") )
+                        {
+                            $(element).addClass('active');
+                        }
+                    }
+                    else
+                    {
+                        $(element).removeClass("active");
+                    }
                 }
-
-
-
-
-
-                
-                if ( $(element).hasClass("active") ) 
+                else
                 {
-                    console.log($(element).text());
-                    console.log($(element).data('pos'));
+                    $(element).removeClass("active");
                 }
             });
-
-            // $('ul.nav li a').click(function() {
-            //     $('ul.nav li.active').removeClass('active');
-            //     $(this).closest('li').addClass('active');
-            // });
-
-            // $('ul li a').on('click', function(){
-            //     var item = $(this).text();
-            //     $(this).parent().addClass('active').siblings().removeClass('active');
-            // });
-
-
-            // console.log($('ul.nav').children('li.active').find('a').text());
-
-            // $('ul.nav li').click(function(){
-            //     $(this).each(function(index,value){
-
-            //     });
-            // });
-
-            // if(lastUrlString == 'home')
-            // {
-
-            //     $('ul.nav > li:nth-child(2)').removeClass('active');
-            //     $('ul.nav > li:nth-child(1)').addClass('active');
-            // }
-            // else if(lastUrlString == 'about')
-            // {
-            //     $('ul.nav > li:nth-child(1)').removeClass('active');
-            //     $('ul.nav > li:nth-child(2)').addClass('active');
-            // }
-            // else if(lastUrlString == 'page' &&  pageName == 'accomodation')
-            // {
-            //     $('ul.nav > li:nth-child(2)').removeClass('active');
-            //     $('ul.nav > li:nth-child(3)').addClass('active');
-            // }
-            // else if(lastUrlString == 'page' &&  pageName == 'nile_curises')
-            // {
-            //     $('ul.nav > li:nth-child(3)').removeClass('active');
-            //     $('ul.nav > li:nth-child(4)').addClass('active');
-            // }
-            // else if(lastUrlString == 'page' &&  pageName == 'tour_packages')
-            // {
-            //     $('ul.nav > li:nth-child(4)').removeClass('active');
-            //     $('ul.nav > li:nth-child(5)').addClass('active');
-            // }
-
-
-
-            // $('ul#dropdown > li').hover(function () {
-            //     $(this).toggleClass('active').siblings().removeClass('active');
-            // });
 
 
         </script>
