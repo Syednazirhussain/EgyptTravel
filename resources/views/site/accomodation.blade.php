@@ -4,7 +4,7 @@
 
 <style type="text/css">
 	.header-bg-4{
-		background-image: url("{{ asset("/site/assets/images/1.jpg") }}");
+		background-image: url("{{ asset("/site/assets/images/4.jpg") }}");
 	}
     
     .social_link a{
@@ -18,6 +18,25 @@
     .pagination>li.active>span{
         background-color: #fec107;
         border: none;
+    }
+
+        .widget-activity-item {
+        position: relative;
+        padding: 12px 15px 12px 64px;
+    }
+    .widget-activity-avatar>img {
+        width: 34px;
+        height: 34px;
+        border-radius: 2px;
+    }
+    .widget-activity-avatar {
+        position: relative;
+        display: block;
+        float: left;
+        width: 34px;
+        height: 34px;
+        margin-top: 3px;
+        margin-left: -49px;
     }
 
 </style>
@@ -57,6 +76,7 @@
         </div>
     </div>
 </section>
+
 <!-- hotel -->
 <section class="hotel-inner">
     <div class="container">
@@ -78,13 +98,22 @@
                             </form>
                         </div>
 
+                        <div class="col-xs-6 col-sm-3 col-md-2">
+                            <div class="select-filters">
+                                <form action="{{ route('site.accomodation') }}" method="GET" id="searchByCity">
+                                    <select name="city" id="city">
+                                        <option value="0">Select City</option>
+                                        <option value="cairo">Cairo</option>
+                                        <option value="alexandria">Alexandria</option>
+                                        <option value="luxor">Luxor</option>
+                                        <option value="aswan">Aswan</option>
+                                        <option value="sharm-el-sheikh">Sharm El Sheikh</option>
+                                        <option value="hurghada">Hurghada</option>
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
 
-
-<!--                         <div class="col-sm-3 col-md-5 hidden-xs text-right">
-                            <a class="filters-btn collapse" data-toggle="collapse" href="#collapseMap"  onclick="init();"><i class="flaticon-earth-globe"></i></a>
-                            <a href="hotels-grid.html" class="filters-btn"><i class="flaticon-squares-gallery-grid-layout-interface-symbol"></i></a>
-                            <a href="hotels-list.html" class="filters-btn"><i class="flaticon-bulleted-list"></i></a>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -92,21 +121,14 @@
             @if(isset($search))
             <div class="col-sm-12 col-md-12" id="searchBy">
                 @if(isset($search['search']))
-                    <h5 class="m-t-0 p-t-0" >Search By: <em>{{ $search['search'] }}</em></h5>
+                    <h5 class="m-t-0 p-t-0" ><strong>Search result for : <em>"{{ $search['search'] }}"</em></strong></h5>
+                @elseif(isset($search['city']))
+                    <h5 class="m-t-0 p-t-0" ><strong>Search result for city: <em>"{{ $search['city'] }}"</em></strong></h5>
                 @endif
             </div>
             @endif
-
-
-            <!-- collapse map -->
-<!--             <div class="col-sm-12">
-                <div class="collapse" id="collapseMap">
-                    <div id="map"></div>
-                </div>
-            </div> -->
-
-            <!-- sideber -->
-            <div class="col-sm-12 col-md-12">
+            
+            <div class="col-sm-12 col-md-9">
                 <div class="hotel-list-content">
                 	@foreach($accomodations as $accomodation)
 	                    <div class="hotel-item">
@@ -126,24 +148,36 @@
 			                            </a>
 			                        </div>
 			                        <div class="hotel-body">
-<!-- 			                            <div class="ratting">
+			                            <div class="ratting">
 			                                <i class="fa fa-star"></i>
 			                                <i class="fa fa-star"></i>
 			                                <i class="fa fa-star"></i>
 			                                <i class="fa fa-star-half-o"></i>
 			                                <i class="fa fa-star-o"></i>
-			                            </div> -->
+			                            </div>
 			                            <!-- title-->
 			                        	<h3>{{ $accomodation->name }}</h3>
 			                            <!-- Text Intro-->
-			                        	<?php echo substr($accomodation->address, 0, 80) . '...'; ?>
-<!-- 			                            <div class="free-service">
-			                                <i class="flaticon-television" data-toggle="tooltip" data-placement="top" title="" data-original-title="Plasma TV with cable chanels"></i>
-			                                <i class="flaticon-swimmer" data-toggle="tooltip" data-placement="top" title="" data-original-title="Swimming pool"></i>
-			                                <i class="flaticon-wifi" data-toggle="tooltip" data-placement="top" title="" data-original-title="Free wifi"></i>
-			                                <i class="flaticon-weightlifting" data-toggle="tooltip" data-placement="top" title="" data-original-title="Fitness center"></i>
-			                                <i class="flaticon-lemonade" data-toggle="tooltip" data-placement="top" title="" data-original-title="Restaurant"></i>
-			                            </div> -->
+			                        	{{ substr($accomodation->address, 0, 40) }}&nbsp;... 
+			                            <div class="free-service m-t-2">
+                                            <div class="row">
+                                                @if(isset($images))
+                                                    @foreach($images as $key => $values)
+                                                        @if($key == $accomodation->id)
+                                                            @foreach($values as $value)
+                                                                @if($value['name'] != '')
+                                                                    <div class="img-thumb col-xs-4 col-sm-4 col-md-3">
+                                                                        <a href="{{ $value['file'] }}" data-source="{{ $value['file'] }}">
+                                                                            <img style="width: 30px;height: 25px" class="img-responsive" src="{{ $value['file'] }}">  
+                                                                        </a>
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            </div>
+			                            </div>
 			                        </div>
 	                        	</div>
 	                        	<div class="col-md-offset-2 col-md-4">
@@ -160,6 +194,34 @@
                 </div>
                 {{ $accomodations->links('vendor.pagination.default') }}
             </div>
+
+            <div class="col-sm-4 col-md-3">
+                <div class="sidber-box popular-post-widget">
+                    <div class="cats-title">Recommended Hotels</div>
+                    <div class="popular-post-inner">
+                        @if(isset($recommended_hotels))
+                            @foreach($recommended_hotels as $recommended_hotel)
+                                <div class="widget-activity-item">
+                                    <div class="widget-activity-avatar">
+                                        @if(isset($recommendedImages))
+                                            @foreach($recommendedImages as $key => $image)
+                                                @if($key == $recommended_hotel->id)
+                                                    <img src="{{ asset('storage/accomodations/'.$image) }}" title="{{ $recommended_hotel->name }}"> 
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                    <div class="widget-activity-header">
+                                      <a href="{{ $recommended_hotel->url_link }}" target="_blank">{{ $recommended_hotel->name }}</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            
         </div>
     </div>
 </section>
@@ -181,6 +243,28 @@
         {
             $(this).trigger("enterKey");
         }
+    });
+
+    var city = "@if(isset($search['city'])){{ $search['city'] }}@endif";
+
+    if(city != '')
+    {
+        $('#city option[value='+city+']').attr('selected','selected');
+    }
+
+    $('#city').on('change',function(){
+        if($(this).val() != '0')
+        {
+            $('#searchByCity').submit();
+        }
+        else
+        {
+            window.location.href = "{{ route('site.accomodation') }}";
+        }
+    });
+
+    $(document).ready(function() {
+      $('.img-thumb > a ').magnificPopup({type:'image'});
     });
 
 

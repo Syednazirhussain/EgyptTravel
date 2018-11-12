@@ -126,7 +126,7 @@
 <body>
   <div class="page-404-bg bg-warning"></div>
   <div class="page-404-header bg-white">
-  	<h4 class="m-t-0 m-b-0">HIGHNOX</h4>
+  	<h4 class="m-t-0 m-b-0">Egypt Travel & Tour</h4>
   </div>
   <h1 class="page-404-error-code"><strong>404</strong></h1>
   <h2 class="page-404-subheader">OOPS!</h2>

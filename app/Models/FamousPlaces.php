@@ -64,7 +64,7 @@ class FamousPlaces extends Model
     **/
     public function placeCategory()
     {
-        return $this->belongsTo(\App\Models\BlogCategory::class);
+        return $this->belongsTo(\App\Models\BlogCategory::class,'famous_place_cat_id','id');
     }
 
     

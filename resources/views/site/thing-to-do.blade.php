@@ -4,7 +4,7 @@
 
 <style type="text/css">
 	.header-bg-2{
-		background-image: url("{{ asset("/site/assets/images/1.jpg") }}");
+		background-image: url("{{ asset("/site/assets/images/4.jpg") }}");
 	}
 
     .social_link a{
@@ -15,6 +15,10 @@
         color: #fec107;
     }
 
+    .pagination>li.active>span{
+        background-color: #fec107;
+        border: none;
+    }
 </style>
 
 @endsection
@@ -52,29 +56,75 @@
         </div>
     </div>
 </section>
-<!-- about section -->
-<section class="about-section">
-    <!-- about section -->
-    <div class="about-inner">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-offset-2 col-md-8">
-                    <div class="section-title text-center">
-                        <i class="fa fa-list-alt"></i>
-                        <h2>Things to do</h2>
+
+
+<!-- blog -->
+<section class="blog-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 col-sm-8">
+                <div class="row">
+                    <h3 class="well" style="background-color: #fff;border: none;">Egypt Famous Site</h3>
+                    @if(isset($place_categorys))
+                        @foreach($place_categorys as $place_category)
+                            <div class="col-sm-6">
+                                <div class="blog-content">
+                                    <div class="blog-img image-hover">
+                                        <a href="javascript:void(0)">
+                                            <img style="width: 390px; height: 300px;" class="img-responsive" src="{{ asset('storage/place_category/'.$place_category->image) }}">
+                                        </a>
+                                        <span class="post-date">{{ \Carbon\Carbon::parse($place_category->created_at)->format('F d, Y') }}</span>
+                                    </div>
+                                    <h4>
+                                        <a href="javascript:void(0)">{{ $place_category->name }}</a>
+                                    </h4>
+                                    @foreach($place_category->famousPlaces as $famousPlace)
+                                        <a  href="{{ route('site.famous_place.detail',[$famousPlace->id]) }}">{{ $famousPlace->title }}</a><br>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+                {{ $place_categorys->links('vendor.pagination.default') }}
+            </div>
+
+            <!-- sideber -->
+            <div class="col-md-3 col-sm-4">
+
+                <div class="sidber-box cats-widget">
+                    <div class="cats-title">
+                        All Categories
+                    </div>
+                    <ul>
+                        @if(isset($place_categorys))
+                            @foreach($place_categorys as $place_category)
+                                <li>
+                                    <a href="javascript:void(0)">{{ $place_category->name }}</a> 
+                                    <span>{{ count($place_category->famousPlaces) }}</span>
+                                </li>
+                            @endforeach
+                        @endif
+                    </ul>
+                </div>
+
+                <div class="sidber-box popular-post-widget">
+                    <div class="cats-title">Travel Tips</div>
+                    <div class="popular-post-inner">
+                        @if(isset($pages))
+                            @foreach($pages as $page)
+                                @if($page->code == 'travel-tip')
+                                    {{ substr(strip_tags(htmlspecialchars_decode($page->description,ENT_NOQUOTES)),0,200) }}
+                                    <a href="{{ route('site.page',['travel-tip']) }}"> 
+                                        ...&nbsp;Read More
+                                    </a>
+                                @endif
+                            @endforeach
+                        @endif
                     </div>
                 </div>
-                <div class="col-sm-12">
-                    <div class="about-title">
-                       <p>
-                       		@foreach($pages as $page)
-                       			@if($page->code == 'travel-planner')
-                       				<?php echo htmlspecialchars_decode($page->description,ENT_NOQUOTES); ?> 
-                       			@endif
-                       		@endforeach
-                       </p>
-                    </div>
-                </div>
+
+
             </div>
         </div>
     </div>

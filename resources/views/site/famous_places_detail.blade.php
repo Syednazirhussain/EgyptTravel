@@ -4,7 +4,7 @@
 
 <style type="text/css">
 	.header-bg-2{
-		background-image: url("{{ asset("/site/assets/images/1.jpg") }}");
+		background-image: url("{{ asset("/site/assets/images/4.jpg") }}");
 	}
 
     .social_link a{
@@ -21,10 +21,10 @@
     }
 
     .widget-activity-avatar>img {
-    width: 34px;
-    height: 34px;
-    border-radius: 2px;
-}
+        width: 34px;
+        height: 34px;
+        border-radius: 2px;
+    }
 
     .widget-activity-avatar {
         position: relative;
@@ -35,7 +35,6 @@
         margin-top: 3px;
         margin-left: -49px;
     }
-
 </style>
 
 @endsection
@@ -93,25 +92,6 @@
                 </p>
             </div>
             <div class="col-md-3 col-md-offset-1 col-sm-4">
-                <!-- popular post -->
-                <div class="sidber-box popular-post-widget">
-                    <div class="cats-title">Categories </div>
-                    <div class="popular-post-inner">
-
-                        @if(isset($place_categorys))
-                            @foreach($place_categorys as $place_category)
-                                <div class="widget-activity-item">
-                                    <div class="widget-activity-avatar">
-                                        <img src="{{ asset('storage/place_category/'.$place_category->image) }}" title="{{ $place_category->name }}"> 
-                                    </div>
-                                    <div class="widget-activity-header">
-                                      <a href="javascript:void(0)">{{ $place_category->name }}</a>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
-                    </div>
-                </div>
 
                 <div class="sidber-box tags-widget">
                     <div class="cats-title">Tags </div>

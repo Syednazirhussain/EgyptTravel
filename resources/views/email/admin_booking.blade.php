@@ -29,6 +29,6 @@
           </p>
         </div>
         <br>
-        <p>For further detail <a href="{{ $url }}">Click here</a></p>
+        <p>For further detail <a href="{{ $url }}" target="_blank">Click here</a></p>
     </body>
 </html>

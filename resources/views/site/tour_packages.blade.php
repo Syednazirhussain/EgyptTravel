@@ -1,7 +1,6 @@
 @extends('site.default')
 
 @section('css')
-
 <style type="text/css">
     .modal-backdrop{
         display: none;
@@ -18,6 +17,10 @@
         content: " ";
         height: 100%;
       }
+    }
+
+    .free-service i {
+        margin: 0px 25px 0px 0px !important;
     }
 
 
@@ -46,10 +49,28 @@
         border: none;
     }
 
+    .widget-activity-item {
+        position: relative;
+        padding: 12px 15px 12px 64px;
+    }
+    .widget-activity-avatar>img {
+        width: 34px;
+        height: 34px;
+        border-radius: 2px;
+    }
+    .widget-activity-avatar {
+        position: relative;
+        display: block;
+        float: left;
+        width: 34px;
+        height: 34px;
+        margin-top: 3px;
+        margin-left: -49px;
+    }
 </style>
-
-
 @endsection
+
+
 
 @section('logo')
 <a class="navbar-brand" href="{{ route('public.site') }}">
@@ -64,8 +85,9 @@
 
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+
 <!-- page header -->
-<section class="header" style='background-image: url("{{ asset("/site/assets/images/1.jpg") }}");'>
+<section class="header" style='background-image: url("{{ asset("/site/assets/images/4.jpg") }}");'>
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -83,6 +105,7 @@
         </div>
     </div>
 </section>
+
 <!-- hotel -->
 <section class="tour-inner">
     <div class="container">
@@ -108,7 +131,7 @@
                             <div class="select-filters">
                                 <form action="{{ route('site.tour_packages') }}" method="GET" id="searchByPrice">
                                     <select name="price" id="sort_price">
-                                        <option value="0">All Prices</option>
+                                        <option value="0"> All Prices </option>
                                         <option value="100-200">100 to 200</option>
                                         <option value="200-400">200 to 400</option>
                                         <option value="400-600">400 to 600</option>
@@ -117,15 +140,17 @@
                                 </form>
                             </div>
                         </div>
+
                         <div class="col-xs-6 col-sm-3 col-md-2">
                             <div class="select-filters">
                                 <form action="{{ route('site.tour_packages') }}" method="GET" id="searchByMonth">
                                     <select name="month" id="sort_month">
-                                        <option value="0">Month Of Travel</option>
+                                        <option value="0">Month Of Travel</option>    
                                     </select>
                                 </form>
                             </div>
                         </div>
+
                         <div class="col-xs-6 col-sm-3 col-md-2">
                             <div class="select-filters">
                                 <form action="{{ route('site.tour_packages') }}" method="GET" id="searchByNight">
@@ -139,39 +164,52 @@
                             </div>
                         </div>
 
-<!--                         <div class="col-sm-3 col-md-5 hidden-xs text-right">
-                            <a class="filters-btn collapse" data-toggle="collapse" href="#collapseMap"  onclick="init();"><i class="flaticon-earth-globe"></i></a>
-                            <a href="javascript:void(0)" class="filters-btn"><i class="flaticon-squares-gallery-grid-layout-interface-symbol"></i></a>
-                            <a href="javascript:void(0)" class="filters-btn"><i class="flaticon-bulleted-list"></i></a>
-                        </div> -->
+                        <div class="col-xs-6 col-sm-3 col-md-2">
+                            <div class="select-filters">
+                                <form action="{{ route('site.tour_packages') }}" method="GET" id="searchByPriceLevel">
+                                    <select name="price_level" id="priceLevel">
+                                        <option value="0">Sort by price</option>
+                                        @if(isset($search['price_level']))
+                                            @if($search['price_level'] == $priceLevel['min'])
+                                                <option value="@if(isset($priceLevel)){{ $priceLevel['min'] }}@endif" selected="selected">Lowest price</option>
+                                                <option value="@if(isset($priceLevel)){{ $priceLevel['max'] }}@endif">Highest price</option>
+                                            @else
+                                                <option value="@if(isset($priceLevel)){{ $priceLevel['min'] }}@endif">Lowest price</option>
+                                                <option value="@if(isset($priceLevel)){{ $priceLevel['max'] }}@endif" selected="selected">Highest price</option>
+                                            @endif
+                                        @else
+                                            <option value="@if(isset($priceLevel)){{ $priceLevel['min'] }}@endif">Lowest price</option>
+                                            <option value="@if(isset($priceLevel)){{ $priceLevel['max'] }}@endif">Highest price</option>
+                                        @endif
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
-<!--             <div class="col-sm-12">
-                <div class="collapse" id="collapseMap">
-                    <div id="map"></div>
-                </div>
-            </div> -->
-
             @if(isset($search))
             <div class="col-sm-12 col-md-12" id="searchBy">
                 @if(isset($search['search']))
-                    <h5 class="m-t-0 p-t-0" >Search By: <em>{{ $search['search'] }}</em></h5>
+                    <h5 class="m-t-0 p-t-0" ><strong>Search result for : <em>"{{ $search['search'] }}"</em></strong></h5><br /><br />
                 @elseif(isset($search['price']))
-                    <h5 class="m-t-0 p-t-0" >Search By: <em>{{ $search['price'] }}</em></h5>
-                @elseif(isset($search['month']))
-                    <h5 class="m-t-0 p-t-0" >Search By: <em>{{ $search['month'] }}</em></h5>
+                    <h5 class="m-t-0 p-t-0" ><strong>Search result for price : <em>"{{ $search['price'] }}"</em></strong></h5><br /><br />
+                @elseif(isset($search['price_level_text']))
+                    <h5 class="m-t-0 p-t-0" ><strong>Search result for : <em>"{{ $search['price_level_text'] }}"</em></strong></h5><br /><br />
                 @endif
             </div>
             @endif
+
+
             
-            <div class="col-sm-12 col-md-12">
+            <div class="col-sm-12 col-md-9">
                 <div class="hotel-list-content">
                     @foreach($packages as $package)
                     <div class="hotel-item">
                         <div class="hotel-image">
-                            <a href="javascript:void(0)">
+                            <a href="{{ route('site.popular_package.detail',[$package->id]) }}">
                                 <div class="img">
                                     @if($package->feature_image != null)
                                         <img style="height: 224px" class="img-responsive" src="<?php echo asset("storage/packages/".$package->feature_image); ?>"> 
@@ -182,19 +220,20 @@
                             </a>
                         </div>
                         <div class="hotel-body">
-                            <h3>{{ $package->title }}</h3>
+                            <h3><strong>{{ $package->title }}</strong></h3>
                             <p>
                                 <?php
                                     $desc = strip_tags($package->description);
-                                    echo substr($desc,0,80)."...";
+                                    echo substr($desc,0,120)."...";
                                 ?>
                             </p>
                             <div class="free-service">
-                                <i class="flaticon-television m-l-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Plasma TV with cable chanels"></i>
-                                <i class="flaticon-swimmer m-l-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Swimming pool"></i>
-                                <i class="flaticon-wifi m-l-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Free wifi"></i>
-                                <i class="flaticon-weightlifting m-l-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Fitness center"></i>
-                                <i class="flaticon-lemonade m-l-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Restaurant"></i>
+                                <i class="fa fa-plane" data-toggle="tooltip" data-placement="top" title="" data-original-title="Flights"></i>
+                                <i class="fa fa-bed" data-toggle="tooltip" data-placement="top" title="" data-original-title="Hotels"></i>
+                                <i class="fa fa-camera" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sightseeing"></i>
+                                <i class="fa fa-exchange" data-toggle="tooltip" data-placement="top" title="" data-original-title="Transfer"></i>
+                                <i class="fa fa-cc-visa" data-toggle="tooltip" data-placement="top" title="" data-original-title="Visa"></i>
+                                <i class="fa fa-cutlery" data-toggle="tooltip" data-placement="top" title="" data-original-title="Meals"></i>
                             </div>
                         </div>
                         <div class="hotel-right"> 
@@ -206,13 +245,14 @@
                                     </h5>
                                 </div>
                             </div>
-                            <div class="hotel-person m-t-3">from 
+                            <div class="hotel-person m-t-3"> 
                                 <span class="color-blue"><?php echo str_replace(".00", "", $package->prices->price)."$"; ?> </span>
+                                <small>Starting price per adult</small>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12">
-                                    <a class="btn btn-default" style="background-color: #fec107; color: #fff" href="javascript:void(0)">Book Online</a>                                    
-                                    <button class="btn btn-default contact_us m-t-1" data-package="{{ $package->id }}" data-toggle="modal" data-target="#callUs"><i class="fa fa-phone"></i>&nbsp;Want us to call you</button>
+                                    <a class="btn btn-default" style="margin-top: 10px; background-color: #fec107; color: #fff" href="{{ route('site.popular_package.detail',[$package->id]) }}">Book Online</a>                                    
+                                    <button class="btn btn-default contact_us m-t-1" data-package="{{ $package->id }}" data-toggle="modal" data-target="#callUs"><i class="fa fa-phone"></i> &nbsp;Want us to call?</button>
                                 </div>
                             </div>
                         </div>
@@ -220,6 +260,42 @@
                     @endforeach
                 </div>
                 {{ $packages->links('vendor.pagination.default') }}
+            </div>
+
+            <div class="col-sm-4 col-md-3">
+
+                <form action="{{ route('site.tour_packages') }}" method="GET" id="priceFilter">
+                    <input type="hidden" name="from" id="from">
+                    <input type="hidden" name="to" id="to">
+                    <input type="hidden" name="type" value="tour_packages">
+                </form>
+
+                <div class="sidber-box cats-price">
+                    <div class="cats-title">Price</div>
+                    <div class="price-Pips">
+                        <input type="text" id="range" value="range" name="range" />
+                    </div>
+                </div>
+
+
+                <div class="sidber-box popular-post-widget">
+                    <div class="cats-title">Popular Packages</div>
+                    <div class="popular-post-inner">
+                        @if(isset($popular_packages))
+                            @foreach($popular_packages as $popular_package)
+                                <div class="widget-activity-item">
+                                    <div class="widget-activity-avatar">
+                                        <img class="img-responsive" src="{{ asset('storage/packages/'.$popular_package->feature_image) }}" title="{{ $popular_package->title }}"> 
+                                    </div>
+                                    <div class="widget-activity-header">
+                                      <a href="{{ route('site.popular_package.detail',[$popular_package->id]) }}">{{ $popular_package->title }}</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+
             </div>
 
             <div class="modal" id="callUs">
@@ -296,16 +372,56 @@
       }
     });
 
-    $('#sort_price').on('change', function() {
-        $('#searchByPrice').submit();
-    });
+    var from = "{{ \Request::input('from') }}";
+    var to = "{{ \Request::input('to') }}";
 
-    $('#sort_month').on('change', function() {
-        if($(this).val() != 0)
-        {
-            $('#searchByMonth').submit();
-        }
-    });
+    if(to != '' && from != '')
+    {   
+        //range slide
+        $("#range").ionRangeSlider({
+            type: "double",
+            grid: true,
+            min: 100,
+            max: 500,
+            from: from,
+            to: to,
+            prefix: "$",
+            onFinish: saveResult
+        });
+    }
+    else
+    {
+        //range slide
+        $("#range").ionRangeSlider({
+            type: "double",
+            grid: true,
+            min: 100,
+            max: 500,
+            from: 100,
+            to: 200,
+            prefix: "$",
+            onFinish: saveResult
+        });        
+    }
+
+
+    function  saveResult(data) {
+        var from = data.from;
+        var to = data.to;
+        $('#from').val(from);
+        $('#to').val(to);
+        $('#priceFilter').submit();
+    };
+
+    var night = "@if(isset($search['night'])){{ $search['night'] }}@endif";
+
+    if(night != '')
+    {
+        var text = $('#sort_night option[value='+night+']').text();
+        $('#searchBy').html('');
+        $('#searchBy').html('<h5 class="m-t-0 p-t-0" ><strong>Search result for duration : <em>"'+text+'"</em></strong></h5><br /><br />');
+        $('#sort_night option[value='+night+']').attr('selected','selected');
+    }
 
     $('#sort_night').on('change', function() {
         if($(this).val() != 0)
@@ -314,8 +430,66 @@
         }
     });
 
+
+    $('#priceLevel').on('change', function() {
+        if($(this).val() != 0)
+        {
+            $('#searchByPriceLevel').submit();
+        }
+    });
+
+
+    var price = "@if(isset($search['price'])){{ $search['price'] }}@endif";
+
+    if(price != '')
+    {
+        $('#sort_price option[value='+price+']').attr('selected','selected');
+    }
+
+    $('#sort_price').on('change', function() {
+        $('#searchByPrice').submit();
+    });
+
+
+    var s_month = "@if(isset($search['month'])){{ $search['month'] }}@endif";
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];    
+    var month = (new Date()).getMonth();
+
+    if(s_month != 0)
+    {
+        $('#searchBy').html('');
+        $('#searchBy').html('<h5 class="m-t-0 p-t-0" ><strong>Search result for month of : <em>"'+monthNames[s_month-1]+'"</em></strong></h5><br /><br />');
+
+        var search = s_month-1;
+
+        for (; month < monthNames.length; month++) 
+        {
+            if(search == month)
+            {
+                $('#sort_month').append('<option value='+(month+1)+' selected>' + monthNames[month] + '</option>');
+            }
+            else
+            {
+                $('#sort_month').append('<option value='+(month+1)+'>' + monthNames[month] + '</option>'); 
+            }
+        }
+    }
+    else
+    {
+        for (; month < monthNames.length; month++) 
+        {
+            $('#sort_month').append('<option value='+(month+1)+'>' + monthNames[month] + '</option>');
+        }
+    }
+
+    $('#sort_month').on('change', function() {
+        if($(this).val() != 0)
+        {
+            $('#searchByMonth').submit();
+        }
+    });
+
     $('#search').bind("enterKey",function(e){
-        
         $('#searchForm').submit();
     });
 
@@ -325,14 +499,6 @@
             $(this).trigger("enterKey");
         }
     });
-
-    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    var month = (new Date()).getMonth();
-    for (; month < monthNames.length; month++) 
-    {
-        $('#sort_month').append('<option value='+(month+1)+'>' + monthNames[month] + '</option>');
-    }
-
     
 
     $('#validation_errors').hide();
@@ -363,28 +529,7 @@
     });
 
 
-    $('#package_contact_us').validate({
-        focusInvalid: false,
-        rules: {
-          'mobile':{
-            required: true,
-            digits: true
-          },
-          'email':{
-            required: true,
-            email: true,
-            minlength: 3
-          }
-        },
-        messages: {
-          'mobile':{
-            required: "Please enter mobile no"
-          },
-          'email': {
-            required: "Please enter email"
-          }
-        }
-    });
+
 
     $('#submit').prop('disabled', true);
 
@@ -446,6 +591,29 @@
         }
     });
 
+    $('#package_contact_us').validate({
+        focusInvalid: false,
+        rules: {
+          'mobile':{
+            required: true,
+            digits: true
+          },
+          'email':{
+            required: true,
+            email: true,
+            minlength: 3
+          }
+        },
+        messages: {
+          'mobile':{
+            required: "Please enter mobile no"
+          },
+          'email': {
+            required: "Please enter email"
+          }
+        }
+    });
+
     // $(document).ready(function () {
 
     //     $('div#searchBy').hide();
@@ -470,9 +638,6 @@
     //console.log(urlParams.getAll('action')); // ["edit"]
     //console.log(urlParams.toString()); // "?post=1234&action=edit"
     //console.log(urlParams.append('active', '1')); // "?post=1234&action=edit&active=1"
-
-
-
 </script>
 
 @endsection

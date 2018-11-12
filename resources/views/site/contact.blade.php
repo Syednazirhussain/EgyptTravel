@@ -4,8 +4,10 @@
 
 <style type="text/css">
 	.header-bg-10{
-		background-image: url("{{ asset("/site/assets/images/1.jpg") }}");
+		background-image: url("{{ asset("/site/assets/images/4.jpg") }}");
 	}
+    
+
 
     .social_link a{
         color: #898989;

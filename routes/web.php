@@ -15,14 +15,6 @@ Route::get('/', function () {
     return redirect()->route('public.site');
 });
 
-Route::get('/admin', function () {
-    return redirect()->route('admin.view.login');
-});
-
-
-Route::get('admin/login',['as' => 'admin.view.login','uses' => 'LoginController@viewLogin']);
-Route::post('admin/login',['as' => 'admin.login','uses' => 'LoginController@login_action']);
-
 Route::get('home',['as' => 'public.site','uses' => 'DashboardController@visitSite']);
 Route::get('/{page_code}',['as' => 'site.page','uses' => 'DashboardController@page']);
 Route::post('contact-us',['as' => 'site.contact','uses' => 'DashboardController@contact']);
@@ -32,10 +24,20 @@ Route::get('accomodation/page',['as' => 'site.accomodation','uses' => 'Dashboard
 Route::get('nile_curises/page',['as' => 'site.nile_curises','uses' => 'DashboardController@nile_curises']);
 Route::get('tour_packages/page',['as' => 'site.tour_packages','uses' => 'DashboardController@tour_package']);
 Route::post('tour_packages/contact/page',['as' => 'site.tour_packages.contact','uses' => 'DashboardController@package_contact']);
+Route::post('package/booking',['as' => 'site.package.booking','uses' => 'DashboardController@package_booking']);
+Route::post('tour/package/main/search',['as' => 'site.package.main.search','uses' => 'DashboardController@main_search']);
+
 
 Route::get('famous-places/{famousPlaces_id}',['as' => 'site.famous_place.detail','uses' => 'DashboardController@famous_places']);
 Route::get('popular-package/{package_id}',['as' => 'site.popular_package.detail','uses' => 'DashboardController@popular_package']);
 Route::get('tour_packages/{package_id}',['as' => 'site.tour_packages.show','uses' => 'DashboardController@package_show']);
+
+Route::get('/admin', function () {
+    return redirect()->route('admin.view.login');
+});
+
+Route::get('admin/login',['as' => 'admin.view.login','uses' => 'LoginController@viewLogin']);
+Route::post('admin/login',['as' => 'admin.login','uses' => 'LoginController@login_action']);
 
 Route::group(['middleware' => ['admin.auth']], function () {
 

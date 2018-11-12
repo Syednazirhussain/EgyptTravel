@@ -142,6 +142,7 @@ class BookingController extends Controller
             $request->session()->flash('msg.error','There is some problem while generating booking');
             return redirect(route('admin.bookings.index'));
         }
+        
     }
 
     /**

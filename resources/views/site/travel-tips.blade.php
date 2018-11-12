@@ -4,7 +4,7 @@
 
 <style type="text/css">
 	.header-bg-2{
-		background-image: url("{{ asset("/site/assets/images/1.jpg") }}");
+		background-image: url("{{ asset("/site/assets/images/4.jpg") }}");
 	}
 
     .social_link a{
@@ -15,6 +15,24 @@
         color: #fec107;
     }
 
+    .widget-activity-item {
+        position: relative;
+        padding: 12px 15px 12px 64px;
+    }
+    .widget-activity-avatar>img {
+        width: 34px;
+        height: 34px;
+        border-radius: 2px;
+    }
+    .widget-activity-avatar {
+        position: relative;
+        display: block;
+        float: left;
+        width: 34px;
+        height: 34px;
+        margin-top: 3px;
+        margin-left: -49px;
+    }
 </style>
 
 @endsection
@@ -52,29 +70,78 @@
         </div>
     </div>
 </section>
-<!-- about section -->
-<section class="about-section">
-    <!-- about section -->
-    <div class="about-inner">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-offset-2 col-md-8">
-                    <div class="section-title text-center">
-                        <i class="fa fa-hand-o-up"></i>
-                        <h2>Travel Tips</h2>
+
+
+<section class="hotels-details-inner">
+    <div class="container">
+        <div class="row">
+            <h3 class="well" style="background-color: #fff;border: none;">Egypt Travel Tips</h3>
+            <div class="col-md-8 col-sm-8">
+                <p>
+                    @foreach($pages as $page)
+                        @if($page->code == 'travel-tip')
+                            <?php echo htmlspecialchars_decode($page->description,ENT_NOQUOTES); ?> 
+                        @endif
+                    @endforeach
+                </p>
+            </div>
+            <div class="col-md-3 col-md-offset-1 col-sm-4">
+
+                <div class="sidber-box popular-post-widget">
+                    <div class="cats-title">Egypt Famous Places</div>
+                    <div class="popular-post-inner">
+                        @if(isset($famousPlaces))
+                            @foreach($famousPlaces as $famousPlace)
+                                <div class="widget-activity-item">
+                                    <div class="widget-activity-avatar">
+                                        <img src="{{ asset('storage/famous_places/'.$famousPlace->image) }}" title="{{ $famousPlace->title }}"> 
+                                    </div>
+                                    <div class="widget-activity-header">
+                                      <a href="javascript:void(0)">{{ $famousPlace->title }}</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
-                <div class="col-sm-12">
-                    <div class="about-title">
-                       <p>
-                       		@foreach($pages as $page)
-                       			@if($page->code == 'travel-tip')
-                       				<?php echo htmlspecialchars_decode($page->description,ENT_NOQUOTES); ?> 
-                       			@endif
-                       		@endforeach
-                       </p>
+
+                <div class="sidber-box popular-post-widget">
+                    <div class="cats-title">Egypt Tour Packages</div>
+                    <div class="popular-post-inner">
+                        @if(isset($packages))
+                            @foreach($packages as $package)
+                                <div class="widget-activity-item">
+                                    <div class="widget-activity-avatar">
+                                        <img src="{{ asset('storage/packages/'.$package->feature_image) }}" title="{{ $package->title }}"> 
+                                    </div>
+                                    <div class="widget-activity-header">
+                                      <a href="javascript:void(0)">{{ $package->title }}</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
+
+                <div class="sidber-box popular-post-widget">
+                    <div class="cats-title">Egypt Nile Cruises Tour Packages</div>
+                    <div class="popular-post-inner">
+                        @if(isset($package_nileCruises))
+                            @foreach($package_nileCruises as $package_nileCruise)
+                                <div class="widget-activity-item">
+                                    <div class="widget-activity-avatar">
+                                        <img src="{{ asset('storage/packages/'.$package_nileCruise->feature_image) }}" title="{{ $package_nileCruise->title }}"> 
+                                    </div>
+                                    <div class="widget-activity-header">
+                                      <a href="javascript:void(0)">{{ $package_nileCruise->title }}</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>

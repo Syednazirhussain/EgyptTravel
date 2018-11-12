@@ -4,11 +4,11 @@
 
 <style type="text/css">
 	.slider-wrapper{
-		background-image: url("{{ asset("/site/assets/images/1.jpg") }}");
+		background-image: url("{{ asset("/site/assets/images/4.jpg") }}");
 	}
 
     .destination{
-        background-image: url("{{ asset("/site/assets/images/7.jpg") }}");
+        background-image: url("{{ asset("/site/assets/images/1.jpg") }}");
     }
 
     .social_link a{
@@ -18,7 +18,6 @@
     .social_link a:hover{
         color: #fec107;
     }
-
 </style>
 
 @endsection
@@ -44,8 +43,8 @@
             <div class="slide">
                 <p class="uc" data-position="150,360" data-in="top" data-step="1" data-out="top" data-ease-in="easeOutBounce">Welcome to </p>
                 <p class="slider-titele" data-position="210,0" data-in="left"  data-step="2" style="margin-left: -115px;" data-delay="100">
-                	{{ $webSetting[0]->title }}
-            	</p>
+                    {{ $webSetting[0]->title }}
+                </p>
                 <p class="slider-text" data-position="270,100" style="margin-left: 250px !important;" data-in="bottom" data-out="right" data-step="2" data-delay="1000">
                     {{ $webSetting[0]->sub_title }}
                 </p>
@@ -53,7 +52,7 @@
             <div class="slide">
                 <p class="uc" data-position="150,360" data-in="top" data-step="1" data-out="top">Welcome to </p>
                 <p class="slider-titele" data-position="210,0" data-in="bottom" style="margin-left: -115px;" data-step="2" data-delay="100">
-                	{{ $webSetting[0]->title }}
+                    {{ $webSetting[0]->title }}
                 </p>
                 <p class="slider-text" data-position="270,100" style="margin-left: 250px !important;" data-in="bottom" data-out="right" data-step="2" data-delay="1000">
                     {{ $webSetting[0]->sub_title }}  
@@ -62,7 +61,6 @@
         </div>
     </div>
 </div>
-
 <!-- booking -->
 <div class="container boking-inner">
     <div class="row">
@@ -70,156 +68,76 @@
             <div class="panel">
                 <div class="panel-heading">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tab1default" data-toggle="tab"><i class="flaticon-paper-plane"></i>Tour</a></li>
-                        <li><a href="#tab2default" data-toggle="tab"> <i class="flaticon-cabin"></i>Hotel</a></li>
+                        <li class="active">
+                            <a href="#tour" data-toggle="tab">
+                                <i class="flaticon-paper-plane"></i>Tour
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="panel-body">
                     <div class="tab-content">
-                        <div class="tab-pane fade in active" id="tab1default">
+                        <div class="tab-pane fade in active" id="tour">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-9 col-md-10">
-                                    <div class="row panel-margin">
-                                        <div class="col-xs-6 col-sm-4 col-md-2 panel-padding">
-                                            <label>Arrival</label>
-                                            <div class="icon-addon">
-                                                <input type="text" placeholder="Date" class="form-control" id="datepicker1"/>
-                                                <label class="glyphicon fa fa-calendar"  title="email"></label>
+                                <form action="{{ route('site.package.main.search') }}" method="POST" id="main_search">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <div class="col-xs-12 col-sm-9 col-md-10">
+                                        <div class="row panel-margin">
+                                            <div class="col-xs-6 col-sm-4 col-md-4 panel-padding">
+                                                <label>Search</label>
+                                                <input type="text" name="search" class="form-control" placeholder="Search" style="height: 42px">
                                             </div>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-4 col-md-2 panel-padding">
-                                            <label>Going</label>
-                                            <div class="icon-addon">
-                                                <input type="text" placeholder="Date" class="form-control" id="datepicker2"/>
-                                                <label class="glyphicon fa fa-calendar"  title="email"></label>
+                                            <div class="col-xs-6 col-sm-4 col-md-2 hidden-sm panel-padding">
+                                                <label>All Prices</label>
+                                                <div class="select-filters">
+                                                    <select name="price" id="s_price">
+                                                        <option value="0">Price</option>
+                                                        <option value="100-200">100 to 200</option>
+                                                        <option value="200-400">200 to 400</option>
+                                                        <option value="400-600">400 to 600</option>
+                                                        <option value="600-800">600 to 800</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-4 col-md-2 hidden-sm panel-padding">
-                                            <label>Room</label>
-                                            <!-- filters select -->
-                                            <div class="select-filters">
-                                                <select name="room" id="room">
-                                                    <option value="" selected="">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                </select>
+                                            <div class="col-xs-6 col-sm-4 col-md-2 hidden-sm panel-padding">
+                                                <label>Months</label>
+                                                <div class="select-filters">
+                                                    <select name="month" id="month">
+                                                        <option value="0">Month</option>   
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-4 col-md-2 hidden-sm panel-padding">
-                                            <label>Person</label>
-                                            <!-- filters select -->
-                                            <div class="select-filters">
-                                                <select name="person" id="person">
-                                                    <option value="" selected="">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                </select>
+                                            <div class="col-xs-6 col-sm-4 col-md-2 hidden-sm panel-padding">
+                                                <label>Duration</label>
+                                                <div class="select-filters">
+                                                    <select name="duration" id="duration">
+                                                        <option value="0">Duration</option>
+                                                        <option value="1-7">Less than 7 nights</option>
+                                                        <option value="8-12">8 to 12 nights</option>
+                                                        <option value="12-above">More than 12 nights</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-4 col-md-2 hidden-sm panel-padding">
-                                            <label>Child</label>
-                                            <!-- filters select -->
-                                            <div class="select-filters">
-                                                <select name="child" id="child">
-                                                    <option value="" selected="">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-4 col-md-2 panel-padding">
-                                            <label>Day</label>
-                                            <!-- filters select -->
-                                            <div class="select-filters">
-                                                <select name="day" id="day">
-                                                    <option value="" selected="">1 days</option>
-                                                    <option value="2">2 days</option>
-                                                    <option value="3">3 days</option>
-                                                    <option value="4">4 days</option>
-                                                </select>
+                                            <div class="col-xs-6 col-sm-4 col-md-2 panel-padding">
+                                                <label>Categorys</label>
+                                                <div class="select-filters">
+                                                    <select name="category_id" id="category_id">
+                                                        <option value="0">Category</option>
+                                                        @if(isset($categorys))
+                                                            @foreach($categorys as $category)
+                                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-3 col-md-2">
-                                    <button type="button" class="thm-btn">Search book</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="tab2default">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-9 col-md-10">
-                                    <div class="row panel-margin">
-                                        <div class="col-xs-6 col-sm-4 col-md-2 panel-padding">
-                                            <label>Arrival</label>
-                                            <div class="icon-addon">
-                                                <input type="text" placeholder="Date" class="form-control" id="datepicker3"/>
-                                                <label class="glyphicon fa fa-calendar"  title="email"></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-4 col-md-2 panel-padding">
-                                            <label>Going</label>
-                                            <div class="icon-addon">
-                                                <input type="text" placeholder="Date" class="form-control" id="datepicker4"/>
-                                                <label class="glyphicon fa fa-calendar"  title="email"></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-4 col-md-2 hidden-sm panel-padding">
-                                            <label>Room</label>
-                                            <!-- filters select -->
-                                            <div class="select-filters">
-                                                <select name="room" id="room2">
-                                                    <option value="" selected="">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-4 col-md-2 hidden-sm panel-padding">
-                                            <label>Person</label>
-                                            <!-- filters select -->
-                                            <div class="select-filters">
-                                                <select name="person" id="person2">
-                                                    <option value="" selected="">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-4 col-md-2 hidden-sm panel-padding">
-                                            <label>Child</label>
-                                            <!-- filters select -->
-                                            <div class="select-filters">
-                                                <select name="child" id="child2">
-                                                    <option value="" selected="">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-4 col-md-2 panel-padding">
-                                            <label>Day</label>
-                                            <!-- filters select -->
-                                            <div class="select-filters">
-                                                <select name="day" id="day2">
-                                                    <option value="" selected="">1 days</option>
-                                                    <option value="2">2 days</option>
-                                                    <option value="3">3 days</option>
-                                                    <option value="4">4 days</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                    <div class="col-xs-12 col-sm-3 col-md-2">
+                                        <button type="button" id="search" class="thm-btn">Search</button>
+                                        <button type="button" class="btn btn-default btn-sm m-t-3" id="refresh" style="height: 45px;width: 40px"><i class="fa fa-refresh"></i></button>
                                     </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-3 col-md-2">
-                                    <button type="button" class="thm-btn">Search book</button>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -235,7 +153,7 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="title">
-                    <h2>Popular Egypt Tour Packages</h2>
+                    <h2 id="popular_package">Popular Egypt Tour Packages</h2>
                 </div>
             </div>
         </div>
@@ -245,7 +163,7 @@
                 <div class="col-md-6">
                     <div class="hotel-item">
                         <div class="hotel-image">
-                            <a href="javascript:void(0)">
+                            <a href="{{ route('site.popular_package.detail',[$package->id]) }}">
                                 <div class="img">
                                     @if($package->feature_image != null)
                                         <img style="height: 200px" class="img-responsive" src="<?php echo asset("storage/packages/".$package->feature_image); ?>"> 
@@ -260,22 +178,35 @@
                             <p>
                                 <span>Covering Sight</span>&#58;
                                 <span>{{ $package->covering_sight }}</span>
-                                <p>{{ $package->prices->title }}</p>
+                                <p>
+                                    @if(isset($package->prices->title))
+                                        {{ $package->prices->title }}
+                                    @else
+                                        {{ App\Models\Price::find($package->price_id)->title }}
+                                    @endif
+                                </p>
                             </p>
                             <p>
                                 <span>From&nbsp;{{ $package->day }}&nbsp;days&nbsp;To&nbsp;{{ $package->night }}&nbsp;nights</span>
                             </p>
                             <div class="free-service">
-                                <i class="flaticon-television" data-toggle="tooltip" data-placement="top" title="" data-original-title="Plasma TV with cable chanels"></i>
-                                <i class="flaticon-swimmer" data-toggle="tooltip" data-placement="top" title="" data-original-title="Swimming pool"></i>
-                                <i class="flaticon-wifi" data-toggle="tooltip" data-placement="top" title="" data-original-title="Free wifi"></i>
-                                <i class="flaticon-weightlifting" data-toggle="tooltip" data-placement="top" title="" data-original-title="Fitness center"></i>
-                                <i class="flaticon-lemonade" data-toggle="tooltip" data-placement="top" title="" data-original-title="Restaurant"></i>
+                                <i class="fa fa-plane" data-toggle="tooltip" data-placement="top" title="" data-original-title="Flights"></i>
+                                <i class="fa fa-bed" data-toggle="tooltip" data-placement="top" title="" data-original-title="Hotels"></i>
+                                <i class="fa fa-camera" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sightseeing"></i>
+                                <i class="fa fa-exchange" data-toggle="tooltip" data-placement="top" title="" data-original-title="Transfer"></i>
+                                <i class="fa fa-cc-visa" data-toggle="tooltip" data-placement="top" title="" data-original-title="Visa"></i>
+                                <i class="fa fa-cutlery" data-toggle="tooltip" data-placement="top" title="" data-original-title="Meals"></i>
                             </div>
                         </div>
                         <div class="hotel-right"> 
                             <div class="hotel-person">from 
-                                <span class="color-blue">${{ $package->prices->price }}</span> person
+                                <span class="color-blue">
+                                    @if(isset($package->prices->price))
+                                        ${{ round($package->prices->price,0) }}                                    
+                                    @else
+                                        ${{ round(App\Models\Price::find($package->price_id)->first()->price,0) }}
+                                    @endif
+                                </span> per person
                             </div>
                             <a class="thm-btn" href="{{ route('site.popular_package.detail',[$package->id]) }}">Details</a>
                         </div>                         
@@ -293,7 +224,7 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="title">
-                    <h2>Recommended Hotels</h2>
+                    <h2>Recommended Hotels In Egypt</h2>
                     <p>This is Amazing hotel in Egypt !</p>
                 </div>
             </div>
@@ -304,7 +235,7 @@
 	            <div class="col-md-6">
 	                <div class="hotel-item">
                         <div class="hotel-image">
-                            <a href="javascript:void(0)">
+                            <a href="{{ $accomodation->url_link }}" target="_blank">
                                 <div class="img">
                                     @if(isset($accomodationImage[$accomodation->id]))
                                         @if($accomodationImage[$accomodation->id] != null)
@@ -317,6 +248,13 @@
                             </a>
                         </div>
                         <div class="hotel-body">
+                            <div class="ratting">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            </div>
                             <h3>{{ $accomodation->name }}</h3>
                             <!-- Text Intro -->
                             <p>
@@ -401,7 +339,7 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="title">
-                    <h2>Famous Places</h2>
+                    <h2>Egypt Famous Places</h2>
                     <p>This is Amazing Travel Agency !</p>
                 </div>
             </div>
@@ -410,7 +348,7 @@
         	@foreach($famousPlaces as $famousPlace)
 	            <div class="col-md-3 col-sm-4 thm-padding">
 	                <div class="destination-grid">
-	                    <a href="javascript:void(0)">
+	                    <a href="{{ route('site.famous_place.detail',[$famousPlace->id]) }}">
 				            @if($famousPlace->image != null)
 			                    <img style="height: 250px" class="img-responsive" src="<?php echo asset("storage/famous_places/".$famousPlace->image); ?>" title="{{ $famousPlace->title }}"> 
 			                @else
@@ -422,7 +360,7 @@
                             <p>
                                 <?php 
                                     $desc =  strip_tags($famousPlace->description);
-                                    echo substr($desc,0,40)."..."; 
+                                    echo substr($desc,0,100)."..."; 
                                 ?>
                             </p>
 	                    </a>
@@ -494,6 +432,88 @@
         </div>
     </div>
 </section>
+
+@endsection
+
+@section('js')
+
+<script type="text/javascript">
+
+    var price = "@if(isset($search['price'])){{ $search['price'] }}@endif";
+
+    if(price != '')
+    {
+        $('#s_price option[value='+price+']').attr('selected','selected');
+    }
+
+    $('#refresh').hide();
+
+    var url = window.location.href; 
+    urlArray = url.split("/");
+    console.log(urlArray);
+    var lastUrlString = urlArray[urlArray.length-1];
+
+    if(lastUrlString == 'search')
+    {
+        $('#popular_package').text('');
+        $('#popular_package').text('Search result...');
+        $('#refresh').show();
+    }
+
+    $('#search').on('click',function(){
+        $('#main_search').submit();
+    });
+
+    $('#refresh').on('click',function(){
+        window.location.href = "{{ route('public.site') }}";
+    });
+
+
+    var s_month = "@if(isset($search['month'])){{ $search['month'] }}@endif";
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];    
+    var month = (new Date()).getMonth();
+
+    if(s_month != 0)
+    {
+        var search = s_month-1;
+
+        for (; month < monthNames.length; month++) 
+        {
+            if(search == month)
+            {
+                $('#month').append('<option value='+(month+1)+' selected>' + monthNames[month] + '</option>');
+            }
+            else
+            {
+                $('#month').append('<option value='+(month+1)+'>' + monthNames[month] + '</option>'); 
+            }
+        }
+    }
+    else
+    {
+        for (; month < monthNames.length; month++) 
+        {
+            $('#month').append('<option value='+(month+1)+'>' + monthNames[month] + '</option>');
+        }
+    }
+
+    var duration = "@if(isset($search['duration'])){{ $search['duration'] }}@endif";
+
+    if(duration != '')
+    {
+        $('#duration option[value='+duration+']').attr('selected','selected');
+    }
+
+    var category_id = "@if(isset($search['category_id'])){{ $search['category_id'] }}@endif";
+
+    if(category_id != '')
+    {
+        $('#category_id option[value='+category_id+']').attr('selected','selected');
+    }
+
+
+
+</script>
 
 @endsection
 

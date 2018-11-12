@@ -4,7 +4,7 @@
 
 <style type="text/css">
 	.header-bg-2{
-		background-image: url("{{ asset("/site/assets/images/1.jpg") }}");
+		background-image: url("{{ asset("/site/assets/images/4.jpg") }}");
 	}
 
     .social_link a{

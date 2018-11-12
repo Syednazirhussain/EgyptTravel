@@ -31,9 +31,7 @@
         <label for="package_id">Package</label>
         <select type="text" name="package_id" id="package_id" class="form-control" value="@if(isset($booking)){{ $booking->package_id }}@endif">
             @if(isset($packages))
-
               @if(isset($booking))
-
                 @foreach($packages as $package)
                     @if($booking->package_id == $package->id)
                         <option  value="{{ $package->id }}" <?php echo "selected"; ?> >{{ $package->title }}</option>
@@ -41,13 +39,10 @@
                         <option  value="{{ $package->id }}">{{ $package->title }}</option>
                     @endif
                 @endforeach
-
               @else
-
                 @foreach($packages as $package)
                   <option  value="{{ $package->id }}">{{ $package->title }}</option>
                 @endforeach
-
               @endif
             @endif
         </select>

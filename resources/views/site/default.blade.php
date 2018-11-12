@@ -51,15 +51,25 @@
                     <!--Collect the nav links, forms, and other content for toggling--> 
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="{{ route('public.site') }}">Home</a></li>
-                            <li><a href="{{ route('site.page',['about']) }}">About Egypt</a></li>
-                            <li><a href="{{ route('site.accomodation') }}">Accomodation</a></li>
-                            <li><a href="{{ route('site.nile_curises') }}">Nile Cruises</a></li>
-                            <li><a href="{{ route('site.tour_packages') }}">Tour Packages</a></li>
-                            <li class="dropdown">
+                            <li class="active" data-pos="1">
+                                <a href="{{ route('public.site') }}">Home</a>
+                            </li>
+                            <li data-pos="2">
+                                <a href="{{ route('site.page',['about']) }}">About Egypt</a>
+                            </li>
+                            <li data-pos="3">
+                                <a href="{{ route('site.accomodation') }}">Accomodation</a>
+                            </li>
+                            <li data-pos="4">
+                                <a href="{{ route('site.nile_curises') }}">Nile Cruises</a>
+                            </li>
+                            <li data-pos="5">
+                                <a href="{{ route('site.tour_packages') }}">Tour Packages</a>
+                            </li>
+                            <li class="dropdown" data-pos="6">
                                 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">FAQ</span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{{ route('site.page',['travel-planner']) }}">Thing to do</a></li>
+                                    <li><a href="{{ route('site.page',['thing-to-do']) }}">Thing to do</a></li>
                                     <li><a href="{{ route('site.page',['travel-tip']) }}">How to travel</a></li>
                                     <li><a href="{{ route('site.page',['travel-help']) }}">Travel Help</a></li>
                                 </ul>
@@ -68,6 +78,7 @@
                     </div>
                 </div>
             </nav> 
+
             @yield('content')
         </div>
 
@@ -250,6 +261,11 @@
         <!-- custom -->
         <script src="{{ asset('/site/assets/js/custom.js') }}" type="text/javascript"></script>
 
+        <script src="{{ asset('/site/assets/js/jquery.magnific-popup.min.js') }}" type="text/javascript"></script>
+
+        <!-- range slider -->
+        <script src="{{ asset('/site/assets/js/ion.rangeSlider.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('/site/assets/js/jquery.easing.min.js') }}" type="text/javascript"></script>
 
 
         <script src="{{ asset('/assets/js/pixeladmin.min.js') }}"></script>
@@ -261,14 +277,54 @@
         <script type="text/javascript">
 
             var url = window.location.href; 
-
             urlArray = url.split("/");
-
             console.log(urlArray);
-
             var lastUrlString = urlArray[urlArray.length-1];
-
+            var pageName = urlArray[urlArray.length-2];
             console.log(lastUrlString);
+
+
+            var navLinks = $('ul.nav li');
+            navLinks.each(function(index,element){
+
+                if(lastUrlString == 'home')
+                {
+
+                    $('ul.nav > li:nth-child(2)').removeClass('active');
+                    $('ul.nav > li:nth-child(1)').addClass('active');
+                }
+                else if(lastUrlString == 'about')
+                {
+                    $('ul.nav > li:nth-child(1)').removeClass('active');
+                    $('ul.nav > li:nth-child(2)').addClass('active');
+                }
+                else if(lastUrlString == 'page' &&  pageName == 'accomodation')
+                {
+                    $('ul.nav > li:nth-child(2)').removeClass('active');
+                    $('ul.nav > li:nth-child(3)').addClass('active');
+                }
+                else if(lastUrlString == 'page' &&  pageName == 'nile_curises')
+                {
+                    $('ul.nav > li:nth-child(3)').removeClass('active');
+                    $('ul.nav > li:nth-child(4)').addClass('active');
+                }
+                else if(lastUrlString == 'page' &&  pageName == 'tour_packages')
+                {
+                    $('ul.nav > li:nth-child(4)').removeClass('active');
+                    $('ul.nav > li:nth-child(5)').addClass('active');
+                }
+
+
+
+
+
+                
+                if ( $(element).hasClass("active") ) 
+                {
+                    console.log($(element).text());
+                    console.log($(element).data('pos'));
+                }
+            });
 
             // $('ul.nav li a').click(function() {
             //     $('ul.nav li.active').removeClass('active');
@@ -289,38 +345,38 @@
             //     });
             // });
 
-            if(lastUrlString == 'home')
-            {
+            // if(lastUrlString == 'home')
+            // {
 
-                $('ul.nav li:nth-child(2)').removeClass('active');
-                $('ul.nav li:nth-child(1)').addClass('active');
-            }
-            else if(lastUrlString == 'about')
-            {
-                $('ul.nav li:nth-child(1)').removeClass('active');
-                $('ul.nav li:nth-child(2)').addClass('active');
-            }
-            else if(lastUrlString == 'accomodation')
-            {
-                $('ul.nav li:nth-child(2)').removeClass('active');
-                $('ul.nav li:nth-child(3)').addClass('active');
-            }
-            else if(lastUrlString == 'nile_curises')
-            {
-                $('ul.nav li:nth-child(3)').removeClass('active');
-                $('ul.nav li:nth-child(4)').addClass('active');
-            }
-            else if(lastUrlString == 'tour_packages')
-            {
-                $('ul.nav li:nth-child(4)').removeClass('active');
-                $('ul.nav li:nth-child(5)').addClass('active');
-            }
+            //     $('ul.nav > li:nth-child(2)').removeClass('active');
+            //     $('ul.nav > li:nth-child(1)').addClass('active');
+            // }
+            // else if(lastUrlString == 'about')
+            // {
+            //     $('ul.nav > li:nth-child(1)').removeClass('active');
+            //     $('ul.nav > li:nth-child(2)').addClass('active');
+            // }
+            // else if(lastUrlString == 'page' &&  pageName == 'accomodation')
+            // {
+            //     $('ul.nav > li:nth-child(2)').removeClass('active');
+            //     $('ul.nav > li:nth-child(3)').addClass('active');
+            // }
+            // else if(lastUrlString == 'page' &&  pageName == 'nile_curises')
+            // {
+            //     $('ul.nav > li:nth-child(3)').removeClass('active');
+            //     $('ul.nav > li:nth-child(4)').addClass('active');
+            // }
+            // else if(lastUrlString == 'page' &&  pageName == 'tour_packages')
+            // {
+            //     $('ul.nav > li:nth-child(4)').removeClass('active');
+            //     $('ul.nav > li:nth-child(5)').addClass('active');
+            // }
 
 
 
-            $('ul#dropdown > li').hover(function () {
-                $(this).toggleClass('active').siblings().removeClass('active');
-            });
+            // $('ul#dropdown > li').hover(function () {
+            //     $(this).toggleClass('active').siblings().removeClass('active');
+            // });
 
 
         </script>
